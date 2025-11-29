@@ -1,6 +1,7 @@
 /// Stable Swap Pool Contract
 /// Optimized AMM for stable asset pairs with lower slippage
 /// Uses StableSwap invariant: An^n * sum(x_i) + D = ADn^n + D^(n+1) / (n^n * prod(x_i))
+#[allow(unused_use, duplicate_alias)]
 module sui_amm::stable_swap_pool {
     use sui::object::{Self, ID, UID};
     use sui::tx_context::{Self, TxContext};
@@ -702,4 +703,5 @@ module sui_amm::stable_swap_pool {
         init(ctx)
     }
 }
+
 

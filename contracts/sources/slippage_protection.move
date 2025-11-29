@@ -1,5 +1,6 @@
 /// Slippage Protection Contract
 /// Manages slippage calculation, protection mechanisms, and price limits
+#[allow(unused_use, duplicate_alias)]
 module sui_amm::slippage_protection {
     use sui::object::{Self, ID, UID};
     use sui::tx_context::{Self, TxContext};
@@ -519,4 +520,5 @@ module sui_amm::slippage_protection {
         object::delete(id);
     }
 }
+
 

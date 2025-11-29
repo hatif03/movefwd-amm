@@ -1,0 +1,51 @@
+# Sui Move build artifacts
+contracts/build/
+.move/
+
+# Sui client data
+.sui/
+
+# Dependencies cache
+.git/modules/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Test output
+test_output/
+coverage/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Node.js (if using any JS tooling)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Scripts output
+scripts/*.log
+
+# Problem statement (optional - remove if you want to track it)
+# problem-statement/
+

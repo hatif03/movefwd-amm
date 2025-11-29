@@ -1,5 +1,6 @@
 /// Fee Distributor Contract
 /// Manages fee collection and distribution to liquidity providers
+#[allow(unused_variable, unused_use, duplicate_alias, unused_field)]
 module sui_amm::fee_distributor {
     use sui::object::{Self, ID, UID};
     use sui::tx_context::{Self, TxContext};
@@ -415,4 +416,5 @@ module sui_amm::fee_distributor {
         init(ctx)
     }
 }
+
 

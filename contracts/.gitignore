@@ -1,0 +1,40 @@
+# Sui Move build artifacts
+build/
+.move/
+
+# Sui client data
+.sui/
+
+# Dependencies cache
+.git/modules/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Test output
+test_output/
+coverage/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+

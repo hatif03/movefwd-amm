@@ -56,8 +56,8 @@ module sui_amm::math {
             return 0
         };
         
-        let x = n;
-        let y = (x + 1) / 2;
+        let mut x = n;
+        let mut y = (x + 1) / 2;
         
         while (y < x) {
             x = y;

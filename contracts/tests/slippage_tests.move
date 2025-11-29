@@ -1,5 +1,6 @@
 /// Unit tests for Slippage Protection module
 #[test_only]
+#[allow(duplicate_alias)]
 module sui_amm::slippage_tests {
     use sui::test_scenario::{Self as ts, Scenario};
     use sui::clock::{Self, Clock};
@@ -233,7 +234,7 @@ module sui_amm::slippage_tests {
     }
 
     #[test]
-    #[expected_failure(abort_code = sui_amm::errors::slippage_exceeded())]
+    #[expected_failure(abort_code = 300, location = sui_amm::slippage_protection)]
     fun test_assert_slippage_fail() {
         // Actual output too low
         slippage_protection::assert_slippage_ok(1000, 900, 50);
@@ -254,7 +255,7 @@ module sui_amm::slippage_tests {
     }
 
     #[test]
-    #[expected_failure(abort_code = sui_amm::errors::price_impact_too_high())]
+    #[expected_failure(abort_code = 303, location = sui_amm::slippage_protection)]
     fun test_assert_price_impact_fail() {
         // Impact exceeds limit
         slippage_protection::assert_price_impact_ok(600, 500);

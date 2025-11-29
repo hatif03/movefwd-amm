@@ -1,4 +1,5 @@
 /// Events for the Sui AMM
+#[allow(duplicate_alias)]
 module sui_amm::events {
     use sui::event;
     use sui::object::ID;
@@ -306,4 +307,5 @@ module sui_amm::events {
         });
     }
 }
+
 

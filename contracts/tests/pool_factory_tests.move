@@ -1,5 +1,6 @@
 /// Unit tests for Pool Factory module
 #[test_only]
+#[allow(unused_variable, deprecated_usage, unused_let_mut)]
 module sui_amm::pool_factory_tests {
     use sui::test_scenario::{Self as ts, Scenario};
     use sui::coin::{Self, Coin};
@@ -536,4 +537,5 @@ module sui_amm::pool_factory_tests {
         ts::end(scenario);
     }
 }
+
 

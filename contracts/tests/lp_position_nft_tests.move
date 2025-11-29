@@ -1,16 +1,16 @@
 /// Unit tests for LP Position NFT module
 #[test_only]
+#[allow(unused_use, duplicate_alias, unused_let_mut)]
 module sui_amm::lp_position_nft_tests {
     use sui::test_scenario::{Self as ts, Scenario};
-    use sui::object::{Self, ID};
+    use sui::object;
     use sui::clock::{Self, Clock};
     
-    use sui_amm::lp_position_nft::{Self, LPPositionNFT, LPPositionManager};
+    use sui_amm::lp_position_nft;
 
     // ============ Test Setup ============
 
     const ALICE: address = @0xA;
-    const BOB: address = @0xB;
 
     fun setup_test(): Scenario {
         ts::begin(ALICE)
@@ -35,8 +35,7 @@ module sui_amm::lp_position_nft_tests {
         assert!(lp_position_nft::manager_total_positions(&manager) == 0, 1);
         
         // Clean up
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         
         ts::end(scenario);
     }
@@ -79,8 +78,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -121,8 +119,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -157,8 +154,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -193,8 +189,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -230,13 +225,12 @@ module sui_amm::lp_position_nft_tests {
         
         lp_position_nft::update_fees(&mut position, new_fee_growth_a, new_fee_growth_b, &clock);
         
-        let (fees_a, fees_b) = lp_position_nft::accumulated_fees(&position);
+        let (fees_a, _fees_b) = lp_position_nft::accumulated_fees(&position);
         assert!(fees_a > 0, 0);
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -284,8 +278,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -329,8 +322,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -366,8 +358,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -398,14 +389,14 @@ module sui_amm::lp_position_nft_tests {
         );
         
         // Burn the position
-        lp_position_nft::burn(&mut manager, position, ts::ctx(&scenario));
+        ts::next_tx(&mut scenario, ALICE);
+        lp_position_nft::burn(&mut manager, position, ts::ctx(&mut scenario));
         
         // Manager should still track that a position was created
         assert!(lp_position_nft::manager_total_positions(&manager) == 1, 0);
         
         // Clean up
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -443,8 +434,7 @@ module sui_amm::lp_position_nft_tests {
         
         // Clean up
         lp_position_nft::destroy_for_testing(position);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);
@@ -495,8 +485,7 @@ module sui_amm::lp_position_nft_tests {
         // Clean up
         lp_position_nft::destroy_for_testing(position1);
         lp_position_nft::destroy_for_testing(position2);
-        let LPPositionManager { id, pool_id: _, total_positions: _ } = manager;
-        object::delete(id);
+        lp_position_nft::destroy_manager_for_testing(manager);
         clock::destroy_for_testing(clock);
         
         ts::end(scenario);

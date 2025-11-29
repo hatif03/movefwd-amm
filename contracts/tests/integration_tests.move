@@ -1,5 +1,6 @@
 /// Integration tests for end-to-end AMM workflows
 #[test_only]
+#[allow(unused_variable, unused_use, deprecated_usage, unused_let_mut)]
 module sui_amm::integration_tests {
     use sui::test_scenario::{Self as ts, Scenario};
     use sui::coin::{Self, Coin};
@@ -104,10 +105,12 @@ module sui_amm::integration_tests {
             let usdc_in = coin::mint_for_testing<USDC>(10000, ts::ctx(&mut scenario));
             let expected_eth = pool_factory::get_amount_out_a_to_b(&pool, 10000);
             
+            // Use 0 for min_output to avoid underflow if expected_eth is small
+            let min_out = if (expected_eth > 10) { expected_eth - 10 } else { 0 };
             let eth_out = pool_factory::swap_a_for_b(
                 &mut pool,
                 usdc_in,
-                expected_eth - 10,
+                min_out,
                 ts::ctx(&mut scenario),
             );
             
@@ -116,10 +119,11 @@ module sui_amm::integration_tests {
             // Swap ETH back for USDC
             let expected_usdc = pool_factory::get_amount_out_b_to_a(&pool, coin::value(&eth_out));
             
+            let min_usdc_out = if (expected_usdc > 10) { expected_usdc - 10 } else { 0 };
             let usdc_out = pool_factory::swap_b_for_a(
                 &mut pool,
                 eth_out,
-                expected_usdc - 10,
+                min_usdc_out,
                 ts::ctx(&mut scenario),
             );
             
@@ -291,7 +295,8 @@ module sui_amm::integration_tests {
             {
                 let mut pool = ts::take_shared<LiquidityPool<USDC, ETH>>(&scenario);
                 
-                let usdc = coin::mint_for_testing<USDC>(1000, ts::ctx(&mut scenario));
+                // Use larger swap amount to ensure non-zero output
+                let usdc = coin::mint_for_testing<USDC>(100000, ts::ctx(&mut scenario));
                 let eth_out = pool_factory::swap_a_for_b(&mut pool, usdc, 0, ts::ctx(&mut scenario));
                 
                 assert!(coin::value(&eth_out) > 0, i);
@@ -338,9 +343,9 @@ module sui_amm::integration_tests {
         {
             let mut factory = ts::take_shared<PoolFactory>(&scenario);
             
-            // 10000 USDC and 10 ETH (1 ETH = 1000 USDC)
-            let usdc = coin::mint_for_testing<USDC>(10000, ts::ctx(&mut scenario));
-            let eth = coin::mint_for_testing<ETH>(10, ts::ctx(&mut scenario));
+            // 1000000 USDC and 1000 ETH (1 ETH = 1000 USDC) - larger amounts for minimum liquidity
+            let usdc = coin::mint_for_testing<USDC>(1000000, ts::ctx(&mut scenario));
+            let eth = coin::mint_for_testing<ETH>(1000, ts::ctx(&mut scenario));
             
             let position = pool_factory::create_pool<USDC, ETH>(
                 &mut factory,
@@ -644,4 +649,5 @@ module sui_amm::integration_tests {
         ts::end(scenario);
     }
 }
+
 

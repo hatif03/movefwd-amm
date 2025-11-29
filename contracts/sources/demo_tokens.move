@@ -1,5 +1,6 @@
 /// Demo tokens for testing the AMM
 /// These are test tokens that can be minted freely for demo purposes
+#[allow(unused_use, duplicate_alias, deprecated_usage, lint(public_entry))]
 module sui_amm::demo_tokens {
     use sui::coin::{Self, TreasuryCap, Coin};
     use sui::tx_context::{Self, TxContext};
@@ -170,8 +171,8 @@ module sui_amm::demo_tokens {
         let usdt = coin::mint(usdt_treasury, 1000000_000000, ctx);
         transfer::public_transfer(usdt, recipient);
         
-        // Mint 100 ETH (18 decimals)
-        let eth = coin::mint(eth_treasury, 100_000000000000000000, ctx);
+        // Mint 10 ETH (18 decimals) - reduced to fit u64
+        let eth = coin::mint(eth_treasury, 10_000000000000000000, ctx);
         transfer::public_transfer(eth, recipient);
         
         // Mint 10 BTC (8 decimals)

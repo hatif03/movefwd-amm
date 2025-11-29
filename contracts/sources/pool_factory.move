@@ -1,5 +1,6 @@
 /// Pool Factory Contract
 /// Creates and manages liquidity pools
+#[allow(unused_variable, duplicate_alias, deprecated_usage)]
 module sui_amm::pool_factory {
     use sui::object::{Self, ID, UID};
     use sui::tx_context::{Self, TxContext};
@@ -755,12 +756,39 @@ module sui_amm::pool_factory {
 
     // ============ Helper Functions ============
 
+    /// Compare two byte vectors lexicographically
+    /// Returns true if a < b
+    fun compare_bytes(a: &vector<u8>, b: &vector<u8>): bool {
+        let len_a = vector::length(a);
+        let len_b = vector::length(b);
+        let min_len = if (len_a < len_b) { len_a } else { len_b };
+        
+        let mut i = 0;
+        while (i < min_len) {
+            let byte_a = *vector::borrow(a, i);
+            let byte_b = *vector::borrow(b, i);
+            if (byte_a < byte_b) {
+                return true
+            };
+            if (byte_a > byte_b) {
+                return false
+            };
+            i = i + 1;
+        };
+        
+        // If all compared bytes are equal, shorter string is "less"
+        len_a < len_b
+    }
+
     /// Order types lexicographically for consistent pool keys
     fun order_types(type_a: TypeName, type_b: TypeName): (TypeName, TypeName) {
         let name_a = type_name::into_string(type_a);
         let name_b = type_name::into_string(type_b);
         
-        if (std::string::into_bytes(name_a) < std::string::into_bytes(name_b)) {
+        let bytes_a = std::ascii::into_bytes(name_a);
+        let bytes_b = std::ascii::into_bytes(name_b);
+        
+        if (compare_bytes(&bytes_a, &bytes_b)) {
             (type_a, type_b)
         } else {
             (type_b, type_a)
@@ -777,9 +805,12 @@ module sui_amm::pool_factory {
         let name_a = type_name::into_string(type_a);
         let name_b = type_name::into_string(type_b);
         
+        let bytes_a = std::ascii::into_bytes(name_a);
+        let bytes_b = std::ascii::into_bytes(name_b);
+        
         // Types are already generic CoinA/CoinB, so we maintain order in the pool
         // The ordering is done on the type names for registry lookup
-        if (std::string::into_bytes(name_a) < std::string::into_bytes(name_b)) {
+        if (compare_bytes(&bytes_a, &bytes_b)) {
             (type_a, type_b, coin_a, coin_b)
         } else {
             (type_b, type_a, coin_a, coin_b)

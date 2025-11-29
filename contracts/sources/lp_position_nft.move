@@ -1,5 +1,6 @@
 /// LP Position NFT Contract
 /// Represents liquidity provider positions as NFTs with dynamic metadata
+#[allow(unused_variable, unused_use, duplicate_alias)]
 module sui_amm::lp_position_nft {
     use sui::object::{Self, ID, UID};
     use sui::tx_context::{Self, TxContext};
@@ -516,6 +517,16 @@ module sui_amm::lp_position_nft {
             description: _,
             image_url: _,
         } = position;
+        object::delete(id);
+    }
+
+    #[test_only]
+    public fun destroy_manager_for_testing(manager: LPPositionManager) {
+        let LPPositionManager {
+            id,
+            pool_id: _,
+            total_positions: _,
+        } = manager;
         object::delete(id);
     }
 }
