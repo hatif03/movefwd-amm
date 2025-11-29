@@ -16,8 +16,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import { toast } from "sonner";
-import { DEMO_TOKENS, TokenSymbol, getTxUrl, PACKAGE_ID } from "@/lib/sui/constants";
+import { DEMO_TOKENS, TokenSymbol, getTxUrl, PACKAGE_ID, MODULES } from "@/lib/sui/constants";
 import { formatTokenAmount } from "@/lib/sui/transactions";
 import { useTokenBalances, useTreasuryCaps } from "@/lib/sui/queries";
 
@@ -40,6 +41,9 @@ export default function FaucetPage() {
   const [mintingToken, setMintingToken] = useState<TokenSymbol | null>(null);
   const [mintedTokens, setMintedTokens] = useState<Set<TokenSymbol>>(new Set());
 
+  // Check if user has any treasury caps (only contract deployer has these)
+  const hasTreasuryCaps = treasuryCaps && Object.keys(treasuryCaps).length > 0;
+
   const handleMint = async (symbol: TokenSymbol) => {
     if (!account) {
       toast.error("Wallet not connected");
@@ -48,23 +52,74 @@ export default function FaucetPage() {
 
     setMintingToken(symbol);
     
-    toast.info(`Minting ${symbol}`, {
-      description: "Please confirm the transaction in your wallet",
+    // Check if user has the treasury cap for this token
+    const treasuryCapId = treasuryCaps?.[symbol];
+    
+    if (treasuryCapId) {
+      // Real minting with treasury cap
+      toast.info(`Minting ${symbol}`, {
+        description: "Please confirm the transaction in your wallet",
+      });
+
+      try {
+        const tx = new Transaction();
+        
+        const functionName = `mint_${symbol.toLowerCase()}`;
+        
+        tx.moveCall({
+          target: `${PACKAGE_ID}::${MODULES.DEMO_TOKENS}::${functionName}`,
+          arguments: [
+            tx.object(treasuryCapId),
+            tx.pure.u64(MINT_AMOUNTS[symbol]),
+            tx.pure.address(account.address),
+          ],
+        });
+        
+        signAndExecute(
+          { transaction: tx },
+          {
+            onSuccess: (result) => {
+              setMintedTokens((prev) => new Set([...prev, symbol]));
+              toast.success(`Minted ${symbol}!`, {
+                description: `Successfully minted ${formatTokenAmount(MINT_AMOUNTS[symbol], DEMO_TOKENS[symbol].decimals, 2)} ${symbol}`,
+                action: {
+                  label: "View",
+                  onClick: () => window.open(getTxUrl(result.digest), "_blank"),
+                },
+              });
+              refetchBalances();
+              setMintingToken(null);
+            },
+            onError: (error) => {
+              toast.error("Mint Failed", {
+                description: error.message || "Transaction failed",
+              });
+              setMintingToken(null);
+            },
+          }
+        );
+        return;
+      } catch (error) {
+        toast.error("Mint Failed", {
+          description: error instanceof Error ? error.message : "Unknown error occurred",
+        });
+        setMintingToken(null);
+        return;
+      }
+    }
+
+    // Simulation mode for users without treasury caps
+    toast.info(`Simulating ${symbol} mint`, {
+      description: "Demo mode - Treasury caps owned by contract deployer",
     });
 
     try {
-      // For demo purposes, simulate minting
-      // In production, this would use the actual treasury caps
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setMintedTokens((prev) => new Set([...prev, symbol]));
       
-      toast.success(`Minted ${symbol}!`, {
-        description: `Successfully received ${formatTokenAmount(MINT_AMOUNTS[symbol], DEMO_TOKENS[symbol].decimals, 2)} ${symbol}`,
-        action: {
-          label: "View",
-          onClick: () => window.open(getTxUrl("demo-tx-hash"), "_blank"),
-        },
+      toast.success(`${symbol} Mint Simulated`, {
+        description: `Demo: Would receive ${formatTokenAmount(MINT_AMOUNTS[symbol], DEMO_TOKENS[symbol].decimals, 2)} ${symbol}. Use CLI to mint real tokens.`,
       });
 
       refetchBalances();
@@ -85,18 +140,78 @@ export default function FaucetPage() {
 
     setMintingToken("USDC"); // Use as loading indicator
 
-    toast.info("Minting All Tokens", {
-      description: "This will mint a bundle of all demo tokens",
+    // Check if we have all treasury caps
+    const allSymbols = Object.keys(DEMO_TOKENS) as TokenSymbol[];
+    const hasAllCaps = allSymbols.every(s => treasuryCaps?.[s]);
+
+    if (hasAllCaps && treasuryCaps) {
+      // Real minting with all treasury caps
+      toast.info("Minting All Tokens", {
+        description: "Please confirm the transaction in your wallet",
+      });
+
+      try {
+        const tx = new Transaction();
+        
+        tx.moveCall({
+          target: `${PACKAGE_ID}::${MODULES.DEMO_TOKENS}::mint_demo_bundle`,
+          arguments: [
+            tx.object(treasuryCaps.USDC!),
+            tx.object(treasuryCaps.USDT!),
+            tx.object(treasuryCaps.ETH!),
+            tx.object(treasuryCaps.BTC!),
+            tx.object(treasuryCaps.WSUI!),
+            tx.pure.address(account.address),
+          ],
+        });
+        
+        signAndExecute(
+          { transaction: tx },
+          {
+            onSuccess: (result) => {
+              const allTokens = new Set(allSymbols);
+              setMintedTokens(allTokens);
+              toast.success("Minted All Tokens!", {
+                description: "You received USDC, USDT, ETH, BTC, and WSUI",
+                action: {
+                  label: "View",
+                  onClick: () => window.open(getTxUrl(result.digest), "_blank"),
+                },
+              });
+              refetchBalances();
+              setMintingToken(null);
+            },
+            onError: (error) => {
+              toast.error("Mint Failed", {
+                description: error.message || "Transaction failed",
+              });
+              setMintingToken(null);
+            },
+          }
+        );
+        return;
+      } catch (error) {
+        toast.error("Mint Failed", {
+          description: error instanceof Error ? error.message : "Unknown error occurred",
+        });
+        setMintingToken(null);
+        return;
+      }
+    }
+
+    // Simulation mode
+    toast.info("Simulating Bundle Mint", {
+      description: "Demo mode - Treasury caps owned by contract deployer",
     });
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 2500));
 
-      const allTokens = new Set(Object.keys(DEMO_TOKENS) as TokenSymbol[]);
+      const allTokens = new Set(allSymbols);
       setMintedTokens(allTokens);
 
-      toast.success("Minted All Tokens!", {
-        description: "You received USDC, USDT, ETH, BTC, and WSUI",
+      toast.success("Mint Simulated!", {
+        description: "Demo: Would receive all tokens. Use CLI to mint real tokens.",
       });
 
       refetchBalances();
@@ -137,6 +252,26 @@ export default function FaucetPage() {
           Get free test tokens to explore SuiSwap on testnet
         </p>
       </div>
+
+      {/* Treasury Cap Notice */}
+      {!hasTreasuryCaps && (
+        <Card className="glass-card border-[#f59e0b]/30 bg-[#f59e0b]/5">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 text-[#f59e0b] mt-0.5 shrink-0" />
+              <div>
+                <h4 className="font-semibold text-[#f59e0b] mb-1">Demo Mode</h4>
+                <p className="text-sm text-[#8b92a5] mb-2">
+                  Treasury caps are owned by the contract deployer. To mint real tokens, use the CLI:
+                </p>
+                <code className="block p-2 rounded bg-[#0a0e1a] text-xs text-[#00d4aa] font-mono overflow-x-auto">
+                  sui client call --package {PACKAGE_ID.slice(0, 10)}... --module demo_tokens --function mint_usdc --args &lt;TREASURY_CAP&gt; &lt;AMOUNT&gt; &lt;RECIPIENT&gt;
+                </code>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Mint All Button */}
       <Card className="glass-card border-white/5 overflow-hidden">

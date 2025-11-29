@@ -30,10 +30,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import { toast } from "sonner";
 import { 
   DEMO_TOKENS, 
   TokenSymbol,
+  PACKAGE_ID,
+  MODULES,
   getObjectUrl,
   getTxUrl,
 } from "@/lib/sui/constants";
@@ -42,10 +45,8 @@ import {
   calculatePriceImpact,
   formatTokenAmount,
   parseTokenAmount,
-  buildSwapAForBTx,
-  buildSwapBForATx,
 } from "@/lib/sui/transactions";
-import { useTokenBalances } from "@/lib/sui/queries";
+import { useTokenBalances, useAllPools } from "@/lib/sui/queries";
 import { MOCK_POOLS, formatUsd, formatNumber } from "@/lib/mock-data";
 
 const SLIPPAGE_OPTIONS = [0.1, 0.5, 1.0, 3.0];
@@ -55,6 +56,7 @@ export default function SwapPage() {
   const client = useSuiClient();
   const { mutate: signAndExecute, isPending } = useSignAndExecuteTransaction();
   const { data: balances, refetch: refetchBalances } = useTokenBalances();
+  const { data: realPools } = useAllPools();
 
   const [tokenFrom, setTokenFrom] = useState<TokenSymbol>("USDC");
   const [tokenTo, setTokenTo] = useState<TokenSymbol>("ETH");
@@ -63,14 +65,26 @@ export default function SwapPage() {
   const [showSettings, setShowSettings] = useState(false);
   const [isSwapping, setIsSwapping] = useState(false);
 
-  // Find the relevant pool
+  // Find the relevant pool - prefer real pools, fallback to mock
   const pool = useMemo(() => {
+    // First try to find a real pool from the blockchain
+    const realPool = realPools?.find(
+      (p) =>
+        (p.tokenA === tokenFrom && p.tokenB === tokenTo) ||
+        (p.tokenA === tokenTo && p.tokenB === tokenFrom)
+    );
+    if (realPool) return realPool;
+    
+    // Fallback to mock pool for demo
     return MOCK_POOLS.find(
       (p) =>
         (p.tokenA === tokenFrom && p.tokenB === tokenTo) ||
         (p.tokenA === tokenTo && p.tokenB === tokenFrom)
     );
-  }, [tokenFrom, tokenTo]);
+  }, [tokenFrom, tokenTo, realPools]);
+  
+  // Check if this is a real on-chain pool
+  const isRealPool = realPools?.some(p => p.id === pool?.id) ?? false;
 
   // Calculate output amount
   const { amountOut, priceImpact, rate } = useMemo(() => {
@@ -131,16 +145,82 @@ export default function SwapPage() {
     });
 
     try {
-      // In a real implementation, we would build and execute the transaction
-      // For demo purposes, we'll simulate a successful swap
+      // Check if this is a real on-chain pool
+      if (isRealPool && balances?.[tokenFrom]?.objects.length) {
+        // Build real transaction
+        const tokenFromInfo = DEMO_TOKENS[tokenFrom];
+        const tokenToInfo = DEMO_TOKENS[tokenTo];
+        const amountIn = parseTokenAmount(amountFrom, tokenFromInfo.decimals);
+        
+        // Calculate minimum output with slippage
+        const expectedOut = parseTokenAmount(amountOut, tokenToInfo.decimals);
+        const minAmountOut = expectedOut - (expectedOut * BigInt(Math.floor(slippage * 100))) / 10000n;
+        
+        const isAToB = pool.tokenA === tokenFrom;
+        
+        const tx = new Transaction();
+        
+        // Get the user's coin objects for the input token
+        const coinObjects = balances[tokenFrom].objects;
+        
+        // Merge coins if needed and split exact amount
+        if (coinObjects.length > 1) {
+          const [primaryCoin, ...otherCoins] = coinObjects;
+          tx.mergeCoins(tx.object(primaryCoin), otherCoins.map(id => tx.object(id)));
+        }
+        
+        const coinToSwap = tx.splitCoins(tx.object(coinObjects[0]), [tx.pure.u64(amountIn)]);
+        
+        // Call the swap function
+        const swapFunction = isAToB ? "swap_a_for_b" : "swap_b_for_a";
+        const coinOut = tx.moveCall({
+          target: `${PACKAGE_ID}::${MODULES.POOL_FACTORY}::${swapFunction}`,
+          typeArguments: [
+            DEMO_TOKENS[pool.tokenA].type,
+            DEMO_TOKENS[pool.tokenB].type,
+          ],
+          arguments: [
+            tx.object(pool.id),
+            coinToSwap,
+            tx.pure.u64(minAmountOut),
+          ],
+        });
+        
+        // Transfer the output coin to the user
+        tx.transferObjects([coinOut], tx.pure.address(account.address));
+        
+        // Execute the transaction
+        signAndExecute(
+          { transaction: tx },
+          {
+            onSuccess: (result) => {
+              toast.success("Swap Successful!", {
+                description: `Swapped ${amountFrom} ${tokenFrom} for ~${amountOut} ${tokenTo}`,
+                action: {
+                  label: "View",
+                  onClick: () => window.open(getTxUrl(result.digest), "_blank"),
+                },
+              });
+              setAmountFrom("");
+              refetchBalances();
+              setIsSwapping(false);
+            },
+            onError: (error) => {
+              toast.error("Swap Failed", {
+                description: error.message || "Transaction failed",
+              });
+              setIsSwapping(false);
+            },
+          }
+        );
+        return;
+      }
+      
+      // Fallback: Simulate for demo/mock pools
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      toast.success("Swap Successful!", {
-        description: `Swapped ${amountFrom} ${tokenFrom} for ${amountOut} ${tokenTo}`,
-        action: {
-          label: "View",
-          onClick: () => window.open(getTxUrl("demo-tx-hash"), "_blank"),
-        },
+      toast.success("Swap Simulated!", {
+        description: `Demo: ${amountFrom} ${tokenFrom} → ${amountOut} ${tokenTo}. Connect to a real pool for actual swaps.`,
       });
 
       setAmountFrom("");

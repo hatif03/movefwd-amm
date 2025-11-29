@@ -32,11 +32,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
 import { toast } from "sonner";
 import { 
   DEMO_TOKENS, 
   TokenSymbol, 
   FEE_TIERS,
+  PACKAGE_ID,
+  MODULES,
+  POOL_FACTORY_ID,
   getTxUrl 
 } from "@/lib/sui/constants";
 import { 
@@ -44,7 +48,7 @@ import {
   formatTokenAmount,
   parseTokenAmount,
 } from "@/lib/sui/transactions";
-import { useTokenBalances } from "@/lib/sui/queries";
+import { useTokenBalances, useAllPools } from "@/lib/sui/queries";
 import { MOCK_POOLS, formatUsd, formatNumber, getTokenInfo } from "@/lib/mock-data";
 
 function AddLiquidityContent() {
@@ -55,6 +59,7 @@ function AddLiquidityContent() {
   const account = useCurrentAccount();
   const { mutate: signAndExecute, isPending } = useSignAndExecuteTransaction();
   const { data: balances, refetch: refetchBalances } = useTokenBalances();
+  const { data: realPools } = useAllPools();
 
   const [tokenA, setTokenA] = useState<TokenSymbol>("USDC");
   const [tokenB, setTokenB] = useState<TokenSymbol>("ETH");
@@ -65,14 +70,26 @@ function AddLiquidityContent() {
   const [isAdding, setIsAdding] = useState(false);
   const [isNewPool, setIsNewPool] = useState(false);
 
-  // Find existing pool
+  // Find existing pool - prefer real pools
   const existingPool = useMemo(() => {
+    // First check real pools from blockchain
+    const realPool = realPools?.find(
+      (p) =>
+        (p.tokenA === tokenA && p.tokenB === tokenB) ||
+        (p.tokenA === tokenB && p.tokenB === tokenA)
+    );
+    if (realPool) return realPool;
+    
+    // Fallback to mock pools
     return MOCK_POOLS.find(
       (p) =>
         (p.tokenA === tokenA && p.tokenB === tokenB) ||
         (p.tokenA === tokenB && p.tokenB === tokenA)
     );
-  }, [tokenA, tokenB]);
+  }, [tokenA, tokenB, realPools]);
+  
+  // Check if this is a real on-chain pool
+  const isRealPool = realPools?.some(p => p.id === existingPool?.id) ?? false;
 
   // Calculate estimated LP tokens and share
   const { lpTokens, sharePercent } = useMemo(() => {
@@ -165,15 +182,102 @@ function AddLiquidityContent() {
     });
 
     try {
-      // Simulate transaction for demo
+      const tokenAInfo = DEMO_TOKENS[tokenA];
+      const tokenBInfo = DEMO_TOKENS[tokenB];
+      const parsedAmountA = parseTokenAmount(amountA, tokenAInfo.decimals);
+      const parsedAmountB = parseTokenAmount(amountB, tokenBInfo.decimals);
+      
+      // Check if we have coins and this is a real pool scenario
+      const hasCoinsA = balances?.[tokenA]?.objects.length;
+      const hasCoinsB = balances?.[tokenB]?.objects.length;
+      
+      if (hasCoinsA && hasCoinsB) {
+        const tx = new Transaction();
+        
+        // Merge and split coins for exact amounts
+        const coinAObjects = balances[tokenA].objects;
+        const coinBObjects = balances[tokenB].objects;
+        
+        // Merge coins A if needed
+        if (coinAObjects.length > 1) {
+          const [primaryA, ...otherA] = coinAObjects;
+          tx.mergeCoins(tx.object(primaryA), otherA.map(id => tx.object(id)));
+        }
+        const coinA = tx.splitCoins(tx.object(coinAObjects[0]), [tx.pure.u64(parsedAmountA)]);
+        
+        // Merge coins B if needed
+        if (coinBObjects.length > 1) {
+          const [primaryB, ...otherB] = coinBObjects;
+          tx.mergeCoins(tx.object(primaryB), otherB.map(id => tx.object(id)));
+        }
+        const coinB = tx.splitCoins(tx.object(coinBObjects[0]), [tx.pure.u64(parsedAmountB)]);
+        
+        if (existingPool && isRealPool) {
+          // Add to existing pool
+          const minLpTokens = lpTokens - (lpTokens * BigInt(Math.floor(slippage * 100))) / 10000n;
+          
+          const position = tx.moveCall({
+            target: `${PACKAGE_ID}::${MODULES.POOL_FACTORY}::add_liquidity`,
+            typeArguments: [tokenAInfo.type, tokenBInfo.type],
+            arguments: [
+              tx.object(existingPool.id),
+              coinA,
+              coinB,
+              tx.pure.u64(minLpTokens),
+              tx.object("0x6"), // Clock
+            ],
+          });
+          
+          // Transfer the LP Position NFT to user
+          tx.transferObjects([position], tx.pure.address(account.address));
+        } else {
+          // Create new pool
+          const position = tx.moveCall({
+            target: `${PACKAGE_ID}::${MODULES.POOL_FACTORY}::create_pool`,
+            typeArguments: [tokenAInfo.type, tokenBInfo.type],
+            arguments: [
+              tx.object(POOL_FACTORY_ID),
+              coinA,
+              coinB,
+              tx.pure.u64(feeTier),
+              tx.object("0x6"), // Clock
+            ],
+          });
+          
+          // Transfer the LP Position NFT to user
+          tx.transferObjects([position], tx.pure.address(account.address));
+        }
+        
+        signAndExecute(
+          { transaction: tx },
+          {
+            onSuccess: (result) => {
+              toast.success(existingPool ? "Liquidity Added!" : "Pool Created!", {
+                description: `You received an LP Position NFT for ${tokenA}/${tokenB}`,
+                action: {
+                  label: "View",
+                  onClick: () => window.open(getTxUrl(result.digest), "_blank"),
+                },
+              });
+              router.push("/positions");
+              setIsAdding(false);
+            },
+            onError: (error) => {
+              toast.error("Transaction Failed", {
+                description: error.message || "Unknown error occurred",
+              });
+              setIsAdding(false);
+            },
+          }
+        );
+        return;
+      }
+      
+      // Fallback: Simulate for demo when no real coins
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      toast.success(existingPool ? "Liquidity Added!" : "Pool Created!", {
-        description: `You received an LP Position NFT for ${tokenA}/${tokenB}`,
-        action: {
-          label: "View",
-          onClick: () => window.open(getTxUrl("demo-tx-hash"), "_blank"),
-        },
+      toast.success("Simulated!", {
+        description: `Demo: Would create LP position for ${tokenA}/${tokenB}. Get tokens from faucet first.`,
       });
 
       router.push("/positions");
@@ -409,14 +513,14 @@ function AddLiquidityContent() {
                 {formatTokenAmount(lpTokens, 6, 4)}
               </span>
             </div>
-            {existingPool && (
+            {existingPool && 'apr' in existingPool && (
               <div className="flex items-center justify-between">
                 <span className="text-[#8b92a5]">Est. APR</span>
                 <span className={`font-mono flex items-center gap-1 ${
-                  existingPool.apr >= 15 ? 'text-[#00d4aa]' : 'text-white'
+                  (existingPool as { apr: number }).apr >= 15 ? 'text-[#00d4aa]' : 'text-white'
                 }`}>
-                  {existingPool.apr >= 15 && <Zap className="w-3 h-3" />}
-                  {existingPool.apr.toFixed(2)}%
+                  {(existingPool as { apr: number }).apr >= 15 && <Zap className="w-3 h-3" />}
+                  {(existingPool as { apr: number }).apr.toFixed(2)}%
                 </span>
               </div>
             )}

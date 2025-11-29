@@ -229,6 +229,89 @@ export function useTreasuryCaps() {
 }
 
 /**
+ * Hook to fetch all liquidity pools from the blockchain
+ */
+export function useAllPools() {
+  const client = useSuiClient();
+  
+  return useQuery({
+    queryKey: ["allPools"],
+    queryFn: async () => {
+      try {
+        // Query for all LiquidityPool objects owned by anyone (shared objects)
+        const poolType = `${PACKAGE_ID}::pool_factory::LiquidityPool`;
+        
+        const objects = await client.queryEvents({
+          query: {
+            MoveEventType: `${PACKAGE_ID}::events::PoolCreated`,
+          },
+          limit: 50,
+          order: "descending",
+        });
+        
+        const pools: Array<{
+          id: string;
+          tokenA: TokenSymbol;
+          tokenB: TokenSymbol;
+          reserveA: bigint;
+          reserveB: bigint;
+          feeTier: number;
+          totalSupply: bigint;
+        }> = [];
+        
+        for (const event of objects.data) {
+          const parsed = event.parsedJson as Record<string, unknown>;
+          const poolId = parsed.pool_id as string;
+          
+          if (poolId) {
+            try {
+              const poolObj = await client.getObject({
+                id: poolId,
+                options: { showContent: true, showType: true },
+              });
+              
+              if (poolObj.data?.content?.dataType === "moveObject") {
+                const fields = poolObj.data.content.fields as Record<string, unknown>;
+                const type = poolObj.data.content.type;
+                
+                // Extract token types
+                const typeMatch = type.match(/<(.+),\s*(.+)>/);
+                const coinAType = typeMatch?.[1] || "";
+                const coinBType = typeMatch?.[2] || "";
+                
+                // Map type to symbol
+                const tokenA = Object.entries(DEMO_TOKENS).find(([, t]) => coinAType.includes(t.type.split("::").pop() || ""))?.[0] as TokenSymbol;
+                const tokenB = Object.entries(DEMO_TOKENS).find(([, t]) => coinBType.includes(t.type.split("::").pop() || ""))?.[0] as TokenSymbol;
+                
+                if (tokenA && tokenB) {
+                  pools.push({
+                    id: poolId,
+                    tokenA,
+                    tokenB,
+                    reserveA: BigInt((fields.reserve_a as { fields?: { value?: string } })?.fields?.value || "0"),
+                    reserveB: BigInt((fields.reserve_b as { fields?: { value?: string } })?.fields?.value || "0"),
+                    feeTier: Number(fields.fee_tier || "30"),
+                    totalSupply: BigInt(fields.total_supply as string || "0"),
+                  });
+                }
+              }
+            } catch (e) {
+              console.error(`Error fetching pool ${poolId}:`, e);
+            }
+          }
+        }
+        
+        return pools;
+      } catch (error) {
+        console.error("Error fetching pools:", error);
+        return [];
+      }
+    },
+    refetchInterval: 30000,
+  });
+}
+
+/**
  * Hook to fetch events from the package
  */
 export function useRecentEvents(limit: number = 20) {
