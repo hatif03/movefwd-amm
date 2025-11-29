@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
@@ -47,7 +47,7 @@ import {
 import { useTokenBalances } from "@/lib/sui/queries";
 import { MOCK_POOLS, formatUsd, formatNumber, getTokenInfo } from "@/lib/mock-data";
 
-export default function AddLiquidityPage() {
+function AddLiquidityContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const poolIdParam = searchParams.get("pool");
@@ -471,6 +471,35 @@ export default function AddLiquidityPage() {
         )}
       </div>
     </div>
+  );
+}
+
+function AddLiquidityLoading() {
+  return (
+    <div className="max-w-xl mx-auto">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="w-10 h-10 rounded-lg bg-[#1a2035] animate-pulse" />
+        <div>
+          <div className="h-6 w-32 bg-[#1a2035] rounded animate-pulse mb-2" />
+          <div className="h-4 w-48 bg-[#1a2035] rounded animate-pulse" />
+        </div>
+      </div>
+      <Card className="glass-card border-white/5">
+        <CardContent className="p-4">
+          <div className="h-32 bg-[#1a2035] rounded-xl animate-pulse mb-4" />
+          <div className="h-10 bg-[#1a2035] rounded-xl animate-pulse mb-4" />
+          <div className="h-32 bg-[#1a2035] rounded-xl animate-pulse" />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+export default function AddLiquidityPage() {
+  return (
+    <Suspense fallback={<AddLiquidityLoading />}>
+      <AddLiquidityContent />
+    </Suspense>
   );
 }
 
