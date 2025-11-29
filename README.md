@@ -2,6 +2,11 @@
 
 A decentralized Automated Market Maker (AMM) built on the Sui blockchain with NFT-based liquidity provider positions, implementing the constant product formula (x * y = k).
 
+🌐 **Live Demo**: [https://movefwd-amm.vercel.app](https://movefwd-amm.vercel.app)
+
+[![SuiSwap](https://img.shields.io/badge/Live-SuiSwap%20AMM-00d4aa?style=for-the-badge)](https://movefwd-amm.vercel.app)
+[![Sui Testnet](https://img.shields.io/badge/Network-Sui%20Testnet-6fbcf0?style=for-the-badge)](https://suiscan.xyz/testnet/object/0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65)
+
 ## Features
 
 ### Core AMM Functionality
@@ -31,29 +36,54 @@ A decentralized Automated Market Maker (AMM) built on the Sui blockchain with NF
 - **Price Impact Warnings**: Calculate and display price impact
 - **Price Limit Orders**: Set target prices for execution
 
+### Web Interface
+- **Modern DeFi UI**: Dark theme with professional DEX aesthetics
+- **Wallet Integration**: Connect with Sui Wallet via @mysten/dapp-kit
+- **Real-time Data**: Live pool reserves, prices, and balances
+- **Demo Token Faucet**: Get test tokens to explore the protocol
+
 ## Project Structure
 
 ```
-contracts/
-├── sources/
-│   ├── constants.move       # Protocol constants and configuration
-│   ├── errors.move          # Error codes
-│   ├── events.move          # Event definitions
-│   ├── math.move            # AMM math utilities
-│   ├── lp_position_nft.move # NFT-based LP positions
-│   ├── pool_factory.move    # Pool creation and management
-│   ├── stable_swap_pool.move # Stable swap implementation
-│   ├── fee_distributor.move # Fee distribution logic
-│   ├── slippage_protection.move # Slippage management
-│   └── demo_tokens.move     # Demo tokens for testing
-├── tests/
-│   ├── math_tests.move      # Math module tests
-│   ├── lp_position_nft_tests.move # NFT tests
-│   ├── pool_factory_tests.move # Pool tests
-│   ├── slippage_tests.move  # Slippage protection tests
-│   ├── constants_tests.move # Constants tests
-│   └── integration_tests.move # End-to-end tests
-└── Move.toml                # Package configuration
+├── contracts/                    # Move smart contracts
+│   ├── sources/
+│   │   ├── constants.move        # Protocol constants and configuration
+│   │   ├── errors.move           # Error codes
+│   │   ├── events.move           # Event definitions
+│   │   ├── math.move             # AMM math utilities
+│   │   ├── lp_position_nft.move  # NFT-based LP positions
+│   │   ├── pool_factory.move     # Pool creation and management
+│   │   ├── stable_swap_pool.move # Stable swap implementation
+│   │   ├── fee_distributor.move  # Fee distribution logic
+│   │   ├── slippage_protection.move # Slippage management
+│   │   └── demo_tokens.move      # Demo tokens for testing
+│   ├── tests/                    # Move unit tests
+│   └── Move.toml                 # Package configuration
+│
+├── frontend/                     # Next.js web application
+│   ├── src/
+│   │   ├── app/                  # Next.js App Router pages
+│   │   │   ├── page.tsx          # Dashboard
+│   │   │   ├── swap/             # Token swap interface
+│   │   │   ├── pools/            # Pool list & add liquidity
+│   │   │   ├── positions/        # LP position management
+│   │   │   └── faucet/           # Demo token faucet
+│   │   ├── components/           # React components
+│   │   │   ├── ui/               # shadcn/ui components
+│   │   │   ├── layout/           # Header, footer, navigation
+│   │   │   └── providers/        # Sui wallet providers
+│   │   └── lib/
+│   │       ├── sui/              # Sui SDK integration
+│   │       │   ├── constants.ts  # Contract addresses
+│   │       │   ├── transactions.ts # PTB builders
+│   │       │   └── queries.ts    # On-chain data queries
+│   │       └── mock-data.ts      # Demo data for UI
+│   ├── package.json
+│   └── tailwind.config.ts
+│
+└── scripts/                      # Deployment & demo scripts
+    ├── deploy.sh                 # Contract deployment
+    └── demo.sh                   # Interactive demo
 ```
 
 ## Quick Start
@@ -120,6 +150,70 @@ View on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0x2ece395019
 ./scripts/demo.sh create-pool
 ./scripts/demo.sh swap
 ```
+
+## Web Interface
+
+The project includes a full-featured Next.js frontend for interacting with the AMM contracts.
+
+### Live Demo
+
+Visit **[https://movefwd-amm.vercel.app](https://movefwd-amm.vercel.app)** to try the live demo on Sui Testnet.
+
+### Features
+
+| Page | Description |
+|------|-------------|
+| **Dashboard** | Protocol overview with TVL ($15.05M), volume ($3.11M), top pools, and recent activity |
+| **Swap** | Trade between any token pair with real-time price quotes and slippage protection |
+| **Pools** | Browse all liquidity pools, view APRs, and add liquidity |
+| **Positions** | Manage your LP Position NFTs, track earned fees, remove liquidity |
+| **Faucet** | Mint demo tokens (USDC, USDT, ETH, BTC, WSUI) for testing |
+
+### Run Locally
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+The frontend will be available at `http://localhost:3000`.
+
+### Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Sui SDK**: @mysten/sui, @mysten/dapp-kit
+- **Styling**: Tailwind CSS with custom dark DeFi theme
+- **UI Components**: shadcn/ui
+- **State Management**: TanStack Query (built into dapp-kit)
+
+### Wallet Connection
+
+The app supports Sui Wallet connection via the dapp-kit. Users can:
+
+1. Click "Connect Wallet" in the header
+2. Select Sui Wallet from the modal
+3. Approve the connection in their wallet
+4. Interact with all AMM functions
+
+### Demo Walkthrough
+
+Try these steps to explore the full protocol:
+
+1. **Connect Wallet** - Use Sui Wallet on testnet
+2. **Get Demo Tokens** - Visit the [Faucet](https://movefwd-amm.vercel.app/faucet) to mint USDC + ETH
+3. **Perform a Swap** - Go to [Swap](https://movefwd-amm.vercel.app/swap) and trade USDC for ETH
+4. **Add Liquidity** - Create an LP position in the USDC/ETH pool
+5. **View LP NFT** - Check your [Positions](https://movefwd-amm.vercel.app/positions) page
+6. **Track Fees** - Watch your accumulated trading fees grow
 
 ## Usage Examples
 
@@ -297,6 +391,8 @@ MIT License - see LICENSE file for details.
 
 ## Resources
 
+- [SuiSwap Live Demo](https://movefwd-amm.vercel.app) - Try the AMM on testnet
+- [Contract on Explorer](https://suiscan.xyz/testnet/object/0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65) - View deployed contracts
 - [Sui Documentation](https://docs.sui.io/)
 - [Move Language](https://move-language.github.io/move/)
 - [Uniswap V2 Whitepaper](https://uniswap.org/whitepaper.pdf)
