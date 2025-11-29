@@ -94,11 +94,21 @@ sui move test
 
 ```bash
 # Deploy to testnet
-./scripts/deploy.sh testnet
-
-# Deploy to devnet
-./scripts/deploy.sh devnet
+sui client publish --gas-budget 500000000
 ```
+
+## Testnet Deployment
+
+The contracts are deployed on **Sui Testnet**:
+
+| Item | Value |
+|------|-------|
+| **Package ID** | `0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65` |
+| **PoolFactory** | `0xf3b24aaf25fcad3d6790b385a1325821a9a2aed31f70d15d403dffdb504e78ca` |
+| **FeeDistributor** | `0x998117bfbff8f06e1ed2bc6ff5951146eba96d32113afecf729e503c74cdc127` |
+| **SlippageSettings** | `0x3f8eed76d96117b231221d4fdda32980b243cd3756267d0eb1cc4d0c1215802b` |
+
+View on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65)
 
 ### Demo
 
