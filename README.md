@@ -131,15 +131,36 @@ sui client publish --gas-budget 500000000
 
 The contracts are deployed on **Sui Testnet** (v3 with public faucet):
 
-| Item | Value |
-|------|-------|
-| **Package ID** | `0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa` |
-| **PoolFactory** | `0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6` |
-| **FeeDistributor** | `0x23036241a23fa36fb8b996d6369f377bdcdecea194860e38e6382031591f384e` |
-| **SlippageSettings** | `0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485308c65963b437103259c11e` |
-| **PublicFaucet** | `0xa2d7ea8c75a3bdb035cd77659808998bbecec1cd7b5641e6e1d4768184eafe5e` |
+### Package & Core Objects
 
-View on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa)
+| Object | ID | Explorer |
+|--------|-----|----------|
+| **Package ID** | `0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa` | [View](https://suiscan.xyz/testnet/object/0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa) |
+| **PoolFactory** | `0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6` | [View](https://suiscan.xyz/testnet/object/0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6) |
+| **FeeDistributor** | `0x23036241a23fa36fb8b996d6369f377bdcdecea194860e38e6382031591f384e` | [View](https://suiscan.xyz/testnet/object/0x23036241a23fa36fb8b996d6369f377bdcdecea194860e38e6382031591f384e) |
+| **SlippageSettings** | `0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485308c65963b437103259c11e` | [View](https://suiscan.xyz/testnet/object/0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485308c65963b437103259c11e) |
+| **PublicFaucet** | `0xa2d7ea8c75a3bdb035cd77659808998bbecec1cd7b5641e6e1d4768184eafe5e` | [View](https://suiscan.xyz/testnet/object/0xa2d7ea8c75a3bdb035cd77659808998bbecec1cd7b5641e6e1d4768184eafe5e) |
+
+### Created Liquidity Pools
+
+| Pool | ID | Transaction |
+|------|-----|-------------|
+| **USDC/USDT** (0.3% fee) | `0x8ad3e617fcf6f8bcb18e1c34e5ff48b49be0d4bc80e2b02529709f558353a4b3` | [View Tx](https://suiscan.xyz/testnet/tx/9t6wd8j3P18WH2Ehdz8bUnEx2PVzmfuZtun5Eyn3Bh3P) |
+| **BTC/WSUI** (0.3% fee) | Created via CLI | [View Factory](https://suiscan.xyz/testnet/object/0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6) |
+
+### Demo Token Types
+
+| Token | Type |
+|-------|------|
+| **USDC** | `{PACKAGE}::demo_usdc::DEMO_USDC` |
+| **USDT** | `{PACKAGE}::demo_usdt::DEMO_USDT` |
+| **ETH** | `{PACKAGE}::demo_eth::DEMO_ETH` |
+| **BTC** | `{PACKAGE}::demo_btc::DEMO_BTC` |
+| **WSUI** | `{PACKAGE}::demo_wsui::DEMO_WSUI` |
+
+> Replace `{PACKAGE}` with the Package ID above.
+
+View main contract on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa)
 
 ### Demo
 
