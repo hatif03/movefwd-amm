@@ -1,0 +1,5 @@
+﻿Committing lock file
+
+Caused by:
+    0: failed to persist temporary file: Access is denied. (os error 5)
+    1: Access is denied. (os error 5)

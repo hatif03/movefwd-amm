@@ -1,8 +1,11 @@
-// Deployed Contract Addresses on Sui Testnet (v2 with demo tokens)
-export const PACKAGE_ID = "0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089";
-export const POOL_FACTORY_ID = "0x0025e19450c6f390900e4a3d879735b119e4503a67aeec5c3e9b9cf0747ba3e7";
-export const FEE_DISTRIBUTOR_ID = "0xefe4a10aab40be514f11a31c9d9e6d736aae5b47c2c0df34c107a3a71bc2e0ca";
-export const SLIPPAGE_SETTINGS_ID = "0x9130617e7916b948280f4741c17fe808086fbe1b08e4b740340a541ca49a52b1";
+// Deployed Contract Addresses on Sui Testnet (v3 with public faucet)
+export const PACKAGE_ID = "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa";
+export const POOL_FACTORY_ID = "0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6";
+export const FEE_DISTRIBUTOR_ID = "0x23036241a23fa36fb8b996d6369f377bdcdecea194860e38e6382031591f384e";
+export const SLIPPAGE_SETTINGS_ID = "0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485308c65963b437103259c11e";
+
+// Public Faucet - Anyone can mint tokens from this!
+export const PUBLIC_FAUCET_ID = "0xa2d7ea8c75a3bdb035cd77659808998bbecec1cd7b5641e6e1d4768184eafe5e";
 
 // System Objects
 export const CLOCK_ID = "0x6";

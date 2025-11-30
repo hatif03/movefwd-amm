@@ -1,0 +1,1060 @@
+﻿sui : [Note]: Dependency sources are no longer verified automatically during 
+publication and upgrade. You can pass the `--verify-deps` option if you 
+would like to verify them as part of publication or upgrade.
+At line:1 char:60
++ ... lyContinue; sui client publish --gas-budget 500000000 --json 2>&1 | O 
+...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([Note]: Depende...ion or upgrad 
+   e.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[note] Dependencies on Bridge, MoveStdlib, Sui, and SuiSystem are 
+automatically added, but this feature is disabled for your package because 
+you have explicitly included dependencies on Sui. Consider removing these 
+dependencies from Move.toml.
+UPDATING GIT DEPENDENCY https://github.com/MystenLabs/sui.git
+INCLUDING DEPENDENCY Sui
+INCLUDING DEPENDENCY MoveStdlib
+BUILDING sui_amm
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_btc.move:12:42
+   [0m[36mΓöé[0m
+[0m[36m12[0m [0m[36mΓöé[0m         let (treasury, metadata) = 
+coin::[0m[33mcreate_currency[0m(
+   [0m[36mΓöé[0m                                          
+[0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 
+'sui::coin::create_currency' is deprecated: Use 
+`coin_registry::new_currency_with_otw` instead[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(deprecated_usage)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_btc.move:26:12
+   [0m[36mΓöé[0m
+[0m[36m26[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun mint(
+   [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m `public` functions can be called from PTBs. `entry` can be 
+used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_usdc.move:12:42
+   [0m[36mΓöé[0m
+[0m[36m12[0m [0m[36mΓöé[0m         let (treasury, metadata) = 
+coin::[0m[33mcreate_currency[0m(
+   [0m[36mΓöé[0m                                          
+[0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 
+'sui::coin::create_currency' is deprecated: Use 
+`coin_registry::new_currency_with_otw` instead[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(deprecated_usage)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_usdc.move:26:12
+   [0m[36mΓöé[0m
+[0m[36m26[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun mint(
+   [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m `public` functions can be called from PTBs. `entry` can be 
+used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_wsui.move:12:42
+   [0m[36mΓöé[0m
+[0m[36m12[0m [0m[36mΓöé[0m         let (treasury, metadata) = 
+coin::[0m[33mcreate_currency[0m(
+   [0m[36mΓöé[0m                                          
+[0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 
+'sui::coin::create_currency' is deprecated: Use 
+`coin_registry::new_currency_with_otw` instead[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(deprecated_usage)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_wsui.move:26:12
+   [0m[36mΓöé[0m
+[0m[36m26[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun mint(
+   [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m `public` functions can be called from PTBs. `entry` can be 
+used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_usdt.move:12:42
+   [0m[36mΓöé[0m
+[0m[36m12[0m [0m[36mΓöé[0m         let (treasury, metadata) = 
+coin::[0m[33mcreate_currency[0m(
+   [0m[36mΓöé[0m                                          
+[0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 
+'sui::coin::create_currency' is deprecated: Use 
+`coin_registry::new_currency_with_otw` instead[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(deprecated_usage)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_usdt.move:26:12
+   [0m[36mΓöé[0m
+[0m[36m26[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun mint(
+   [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m `public` functions can be called from PTBs. `entry` can be 
+used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:6:27
+  [0m[36mΓöé[0m
+[0m[36m6[0m [0m[36mΓöé[0m     use sui::tx_context::{[0m[33mSelf[0m, 
+TxContext};
+  [0m[36mΓöé[0m                           [0m[33m^^^^[0m 
+[0m[33mUnnecessary alias 'tx_context' for module 'sui::tx_context'. This 
+alias is provided by default[0m
+  [0m[36mΓöé[0m
+  [0m[36m=[0m This warning can be suppressed with 
+'#[allow(duplicate_alias)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:6:33
+  [0m[36mΓöé[0m
+[0m[36m6[0m [0m[36mΓöé[0m     use sui::tx_context::{Self, 
+[0m[33mTxContext[0m};
+  [0m[36mΓöé[0m                                 [0m[33m^^^^^^^^^[0m 
+[0m[33mUnnecessary alias 'TxContext' for module member 
+'sui::tx_context::TxContext'. This alias is provided by default[0m
+  [0m[36mΓöé[0m
+  [0m[36m=[0m This warning can be suppressed with 
+'#[allow(duplicate_alias)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:7:14
+  [0m[36mΓöé[0m
+[0m[36m7[0m [0m[36mΓöé[0m     use sui::[0m[33mtransfer[0m;
+  [0m[36mΓöé[0m              [0m[33m^^^^^^^^[0m [0m[33mUnnecessary 
+alias 'transfer' for module 'sui::transfer'. This alias is provided by 
+default[0m
+  [0m[36mΓöé[0m
+  [0m[36m=[0m This warning can be suppressed with 
+'#[allow(duplicate_alias)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:8:23
+  [0m[36mΓöé[0m
+[0m[36m8[0m [0m[36mΓöé[0m     use sui::object::{[0m[33mSelf[0m, 
+UID};
+  [0m[36mΓöé[0m                       [0m[33m^^^^[0m 
+[0m[33mUnnecessary alias 'object' for module 'sui::object'. This alias is 
+provided by default[0m
+  [0m[36mΓöé[0m
+  [0m[36m=[0m This warning can be suppressed with 
+'#[allow(duplicate_alias)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W02021][0m[1m: duplicate alias[0m
+  [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:8:29
+  [0m[36mΓöé[0m
+[0m[36m8[0m [0m[36mΓöé[0m     use sui::object::{Self, 
+[0m[33mUID[0m};
+  [0m[36mΓöé[0m                             [0m[33m^^^[0m 
+[0m[33mUnnecessary alias 'UID' for module member 'sui::object::UID'. This 
+alias is provided by default[0m
+  [0m[36mΓöé[0m
+  [0m[36m=[0m This warning can be suppressed with 
+'#[allow(duplicate_alias)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W09011][0m[1m: unused constant[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:18:11
+   [0m[36mΓöé[0m
+[0m[36m18[0m [0m[36mΓöé[0m     const [0m[33mENotAuthorized[0m: u64 
+= 2;
+   [0m[36mΓöé[0m           [0m[33m^^^^^^^^^^^^^^[0m [0m[33mThe 
+constant 'ENotAuthorized' is never used. Consider removing it.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(unused_const)]' applied to the 'module' or module member ('const', 
+'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:65:12
+   [0m[36mΓöé[0m
+[0m[36m65[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun 
+create_faucet(
+   [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m `public` functions can be called from PTBs. `entry` can be 
+used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:93:12
+   [0m[36mΓöé[0m
+[0m[36m93[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun 
+request_usdc(
+   [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m `public` functions can be called from PTBs. `entry` can be 
+used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+    [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:114:12
+    [0m[36mΓöé[0m
+[0m[36m114[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun 
+request_usdt(
+    [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+    [0m[36mΓöé[0m
+    [0m[36m=[0m `public` functions can be called from PTBs. `entry` can 
+be used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+    [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+    [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:134:12
+    [0m[36mΓöé[0m
+[0m[36m134[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun 
+request_eth(
+    [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+    [0m[36mΓöé[0m
+    [0m[36m=[0m `public` functions can be called from PTBs. `entry` can 
+be used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+    [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+    [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:154:12
+    [0m[36mΓöé[0m
+[0m[36m154[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun 
+request_btc(
+    [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+    [0m[36mΓöé[0m
+    [0m[36m=[0m `public` functions can be called from PTBs. `entry` can 
+be used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+    [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+    [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:174:12
+    [0m[36mΓöé[0m
+[0m[36m174[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun 
+request_wsui(
+    [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+    [0m[36mΓöé[0m
+    [0m[36m=[0m `public` functions can be called from PTBs. `entry` can 
+be used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+    [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+    [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\public_faucet.move:194:12
+    [0m[36mΓöé[0m
+[0m[36m194[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun 
+request_all_tokens(
+    [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+    [0m[36mΓöé[0m
+    [0m[36m=[0m `public` functions can be called from PTBs. `entry` can 
+be used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+    [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[W04037][0m[1m: deprecated usage[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_eth.move:12:42
+   [0m[36mΓöé[0m
+[0m[36m12[0m [0m[36mΓöé[0m         let (treasury, metadata) = 
+coin::[0m[33mcreate_currency[0m(
+   [0m[36mΓöé[0m                                          
+[0m[33m^^^^^^^^^^^^^^^[0m [0m[33mThe function 
+'sui::coin::create_currency' is deprecated: Use 
+`coin_registry::new_currency_with_otw` instead[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(deprecated_usage)]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+[0m[1m[38;5;11mwarning[Lint W99010][0m[1m: unnecessary `entry` on a 
+`public` function[0m
+   [0m[36mΓöîΓöÇ[0m 
+\\?\D:\movefwd-amm\contracts\sources\demo_eth.move:26:12
+   [0m[36mΓöé[0m
+[0m[36m26[0m [0m[36mΓöé[0m     public [0m[33mentry[0m fun mint(
+   [0m[36mΓöé[0m            [0m[33m^^^^^[0m [0m[33m`entry` on 
+`public` functions limits composability as it adds restrictions, e.g. the 
+type of each return value must have `drop`. `entry` on `public` is only 
+meaningful in niche scenarios.[0m
+   [0m[36mΓöé[0m
+   [0m[36m=[0m `public` functions can be called from PTBs. `entry` can be 
+used to allow non-`public` functions to be called from PTBs, but it adds 
+restrictions on the usage of input arguments and on the type of return 
+values. Unless this `public` function interacts with an intricate set of 
+other `entry` functions, the `entry` modifier should be removed.
+   [0m[36m=[0m This warning can be suppressed with 
+'#[allow(lint(public_entry))]' applied to the 'module' or module member 
+('const', 'fun', or 'struct')
+
+Please report feedback on the linter warnings at https://forums.sui.io
+
+Skipping dependency verification
+{
+  "digest": "E6gVKaVLqa5oGvwQfsEPjZao8uvrGawFZyoG7xBAxG2k",
+  "transaction": {
+    "data": {
+      "messageVersion": "v1",
+      "transaction": {
+        "kind": "ProgrammableTransaction",
+        "inputs": [
+          {
+            "type": "pure",
+            "valueType": "address",
+            "value": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+          }
+        ],
+        "transactions": [
+          {
+            "Publish": [
+              "0x0000000000000000000000000000000000000000000000000000000000000001",
+              "0x0000000000000000000000000000000000000000000000000000000000000002"
+            ]
+          },
+          {
+            "TransferObjects": [
+              [
+                {
+                  "Result": 0
+                }
+              ],
+              {
+                "Input": 0
+              }
+            ]
+          }
+        ]
+      },
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "gasData": {
+        "payment": [
+          {
+            "objectId": "0x07d048debf0ef287506368aa0b26e0105d06978bee1f6c9628441a5cbbb7d30d",
+            "version": 349181017,
+            "digest": "4A8sbgyeVx4JLV4LERSChAZuWwr2WqdEq9e6mEMRTLDm"
+          }
+        ],
+        "owner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+        "price": "1000",
+        "budget": "500000000"
+      }
+    },
+    "txSignatures": [
+      "ADSOAWkrwyk3s+WqUmlI4eDoDomksVnLKBnGb7MzhD7g3q3eL8VpIax5UO7yPL7VcIjYNlLfFs1UsBk5Q4ARFgmdf2Svk+jp+0I5itUVzzbvFgQnA1Wgsgk41r3h5FW7fQ=="
+    ]
+  },
+  "effects": {
+    "messageVersion": "v1",
+    "status": {
+      "status": "success"
+    },
+    "executedEpoch": "934",
+    "gasUsed": {
+      "computationCost": "3000000",
+      "storageCost": "316768000",
+      "storageRebate": "978120",
+      "nonRefundableStorageFee": "9880"
+    },
+    "modifiedAtVersions": [
+      {
+        "objectId": "0x07d048debf0ef287506368aa0b26e0105d06978bee1f6c9628441a5cbbb7d30d",
+        "sequenceNumber": "349181017"
+      }
+    ],
+    "transactionDigest": "E6gVKaVLqa5oGvwQfsEPjZao8uvrGawFZyoG7xBAxG2k",
+    "created": [
+      {
+        "owner": {
+          "Shared": {
+            "initial_shared_version": 349181018
+          }
+        },
+        "reference": {
+          "objectId": "0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485308c65963b437103259c11e",
+          "version": 349181018,
+          "digest": "69jDe2YipV1T34z6dgvdQE1gcciStMFqHSV4MsvmUuD"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0x0a5e9f6705f03746ab57a5d1a00fb448688fb92c9b3aa49d6fd9317b7b6a9d53",
+          "version": 349181018,
+          "digest": "AVm2zkn96bFaSVWM13n7C3ys5HpU8LuK6Rzn3rKFPXFC"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0x1429e63e1ce6227238c3b81f2fd83c3a4777e72400512cca555f08660668c619",
+          "version": 349181018,
+          "digest": "8SVCmKW1eSkz5SQJRnYuwwPnBofZFEbZrqLUZFP4wAhr"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0x1cf76aec3a50aaee2cb60ba27ba4cbc5f9fe4d8a6eeb58712116b04bf0a6c065",
+          "version": 349181018,
+          "digest": "GM93DkHpoXN2EdMHS4C64KMFwXWcJLyghU26zNB9HE8B"
+        }
+      },
+      {
+        "owner": {
+          "Shared": {
+            "initial_shared_version": 349181018
+          }
+        },
+        "reference": {
+          "objectId": "0x23036241a23fa36fb8b996d6369f377bdcdecea194860e38e6382031591f384e",
+          "version": 349181018,
+          "digest": "59jPraRde9PDMHw7PzA66kB7mvSqHUHva3Vb6Q7YDQPD"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0x249076b19e00a736045bb3ccac46aae47ebe879c1403cfee0c77af2ee3c747c4",
+          "version": 349181018,
+          "digest": "AaZMS5z5fQPDF2oknEE6rqTkdiLyKqdHhmfkeqz9YHWG"
+        }
+      },
+      {
+        "owner": "Immutable",
+        "reference": {
+          "objectId": "0x2c8c6ad3fc3ef3a64dd97014ee6f21ba8ca5e2004d50049917727aebf3898dc6",
+          "version": 349181018,
+          "digest": "HAMGLDt6sm5NEWdm1uynKKwubAMUu6ezEMm58JGAsuut"
+        }
+      },
+      {
+        "owner": "Immutable",
+        "reference": {
+          "objectId": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa",
+          "version": 1,
+          "digest": "Ff7dG7aKCBXAacYUHWqa5Sw6URphJSGfmVzVCsr2SRiC"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0x468e4260316d4aab56514a4a6a67c32d08494e7cdc5d9d953cf000d7a7cb1d8f",
+          "version": 349181018,
+          "digest": "GaQhWm8oRkYAgLzcsnpR6dLDKDyL8Yoj3pAj1NJCCJN"
+        }
+      },
+      {
+        "owner": "Immutable",
+        "reference": {
+          "objectId": "0x6bf47d2ea0ca2069d7855b27b5bef73d87f13cc57d682813e001073d1d5e2ea0",
+          "version": 349181018,
+          "digest": "AAKst1A9eary4942f8BHa3CodMxDZhAoVWYhfRgYupJW"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0x864dcb7095039dc90ee4965d937bf446d264963ed37b9b98df36a0a42ed47cdd",
+          "version": 349181018,
+          "digest": "G2x84V96wVK1nMR56ncoPcgMWJ9KSyFstBaYngQ1BDcU"
+        }
+      },
+      {
+        "owner": "Immutable",
+        "reference": {
+          "objectId": "0xace7dfd5f9690165c2f944cb2ce5370898d2ea7188bc80d68a988a4e120d1836",
+          "version": 349181018,
+          "digest": "Aig6eVapGsfXHSSip6TaFrMvMz3mbXHtTZm9AaA44CYd"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0xb657127b41f644de77da37dc6511d6f578ad02849bd1fe54f40b2774036ea97d",
+          "version": 349181018,
+          "digest": "2vF8kG8L5wqb8kfR43Ut4ei87TfpUayjAHa2wFNNvJqz"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0xc448ef1b7ee3c10028594001b7fb6425cd0d3df08787e6991c26e0c43f55e685",
+          "version": 349181018,
+          "digest": "4oMEuWHt6gGBCMcpjpyerdwv5wtGcFjNqsbZDmeKAqog"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0xcce21b9a86d987baffa94afdf4fe106c31005b53d3390837701529faf07bf936",
+          "version": 349181018,
+          "digest": "2KEtHT3wLJGh3bmC8894sCrWFu8SJx7DFtKS74XaQiJ8"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0xd1f2f43da1efdc1cd737069f117a8b34cf7b5014727f57eab0b84b4a5cc70aad",
+          "version": 349181018,
+          "digest": "Bi4DJarGVC2ejgJ148qao3coum5vJaNdsyUCmWLXMqHi"
+        }
+      },
+      {
+        "owner": "Immutable",
+        "reference": {
+          "objectId": "0xd63a3a25a93c778537d25ed8857fa6043b4a1518cc3c316adec1d88efbddf457",
+          "version": 349181018,
+          "digest": "7p34ABJcmCepSekRonyxTwUzCRz5VCGfaYyoFitmtPzK"
+        }
+      },
+      {
+        "owner": {
+          "Shared": {
+            "initial_shared_version": 349181018
+          }
+        },
+        "reference": {
+          "objectId": "0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6",
+          "version": 349181018,
+          "digest": "CzdZCNRpMWzUrVicmRNTLWwHni2emJoC1w1HHUbaEVZc"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0xeead36fb8a916a1f551c3fd5951cdd8a91e1ec1f3101f2ad049dc8695bba6ece",
+          "version": 349181018,
+          "digest": "3pAoDTpoQ84b4iLENuZzwqCiBFbU8py6jB9uvxKjvxop"
+        }
+      },
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0xeeeb091722b882023461b59ab1391a5d47b283ab585d53910f1f6da59ade01c5",
+          "version": 349181018,
+          "digest": "9NmV78Ux7WtVaCLAyXJgRL1kQ9vkwMKKVkNYWaDSAZK"
+        }
+      },
+      {
+        "owner": "Immutable",
+        "reference": {
+          "objectId": "0xf340156444e7b9762beeb81c35945036cd92eef8990bd768920958b98565ee46",
+          "version": 349181018,
+          "digest": "2FweygztcwzfzfP7tG8hoeXysUNeKgwzuxtjLTzFa34a"
+        }
+      }
+    ],
+    "mutated": [
+      {
+        "owner": {
+          "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+        },
+        "reference": {
+          "objectId": "0x07d048debf0ef287506368aa0b26e0105d06978bee1f6c9628441a5cbbb7d30d",
+          "version": 349181018,
+          "digest": "6bzxPxTKJC4mZd1t5DFURUjxJ3ZUBDRXmwrv8e5iiU1U"
+        }
+      }
+    ],
+    "gasObject": {
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "reference": {
+        "objectId": "0x07d048debf0ef287506368aa0b26e0105d06978bee1f6c9628441a5cbbb7d30d",
+        "version": 349181018,
+        "digest": "6bzxPxTKJC4mZd1t5DFURUjxJ3ZUBDRXmwrv8e5iiU1U"
+      }
+    },
+    "eventsDigest": "HCEDaZYPvon2iGHCfygc5qQgGxSLm7AkkAdffGuB8yML",
+    "dependencies": [
+      "535HyUAu8AyT88upz7nWBHgwdfc1u97KCtzoV3Vax6Bh",
+      "5iMW4cq1M7sULbEG2PgD295HwyTRZg4N3vaPpYdD1YqY",
+      "Dd9pn1zFcSJjinxQewFd2gQdR4XKsHxFioD5MYnwLZQz"
+    ]
+  },
+  "events": [
+    {
+      "id": {
+        "txDigest": "E6gVKaVLqa5oGvwQfsEPjZao8uvrGawFZyoG7xBAxG2k",
+        "eventSeq": "0"
+      },
+      "packageId": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa",
+      "transactionModule": "lp_position_nft",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "type": "0x2::display::DisplayCreated<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::lp_position_nft::LPPositionNFT>",
+      "parsedJson": {
+        "id": "0xeeeb091722b882023461b59ab1391a5d47b283ab585d53910f1f6da59ade01c5"
+      },
+      "bcsEncoding": "base64",
+      "bcs": "7usJFyK4ggI0YbWasTkaXUeyg6tYXVORDx9tpZreAcU="
+    },
+    {
+      "id": {
+        "txDigest": "E6gVKaVLqa5oGvwQfsEPjZao8uvrGawFZyoG7xBAxG2k",
+        "eventSeq": "1"
+      },
+      "packageId": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa",
+      "transactionModule": "lp_position_nft",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "type": "0x2::display::VersionUpdated<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::lp_position_nft::LPPositionNFT>",
+      "parsedJson": {
+        "fields": {
+          "contents": [
+            {
+              "key": "name",
+              "value": "{name}"
+            },
+            {
+              "key": "description",
+              "value": "{description}"
+            },
+            {
+              "key": "image_url",
+              "value": "{image_url}"
+            },
+            {
+              "key": "pool_id",
+              "value": "{pool_id}"
+            },
+            {
+              "key": "lp_tokens",
+              "value": "{lp_tokens}"
+            },
+            {
+              "key": "project_url",
+              "value": "https://sui-amm.io"
+            }
+          ]
+        },
+        "id": "0xeeeb091722b882023461b59ab1391a5d47b283ab585d53910f1f6da59ade01c5",
+        "version": 1
+      },
+      "bcsEncoding": "base64",
+      "bcs": "7usJFyK4ggI0YbWasTkaXUeyg6tYXVORDx9tpZreAcUBAAYEbmFtZQZ7bmFtZX0LZGVzY3JpcHRpb24Ne2Rlc2NyaXB0aW9ufQlpbWFnZV91cmwLe2ltYWdlX3VybH0HcG9vbF9pZAl7cG9vbF9pZH0JbHBfdG9rZW5zC3tscF90b2tlbnN9C3Byb2plY3RfdXJsEmh0dHBzOi8vc3VpLWFtbS5pbw=="
+    }
+  ],
+  "objectChanges": [
+    {
+      "type": "mutated",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::coin::Coin<0x2::sui::SUI>",
+      "objectId": "0x07d048debf0ef287506368aa0b26e0105d06978bee1f6c9628441a5cbbb7d30d",
+      "version": "349181018",
+      "previousVersion": "349181017",
+      "digest": "6bzxPxTKJC4mZd1t5DFURUjxJ3ZUBDRXmwrv8e5iiU1U"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "Shared": {
+          "initial_shared_version": 349181018
+        }
+      },
+      "objectType": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::slippage_protection::SlippageProtectionSettings",
+      "objectId": "0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485308c65963b437103259c11e",
+      "version": "349181018",
+      "digest": "69jDe2YipV1T34z6dgvdQE1gcciStMFqHSV4MsvmUuD"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::coin::TreasuryCap<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_btc::DEMO_BTC>",
+      "objectId": "0x0a5e9f6705f03746ab57a5d1a00fb448688fb92c9b3aa49d6fd9317b7b6a9d53",
+      "version": "349181018",
+      "digest": "AVm2zkn96bFaSVWM13n7C3ys5HpU8LuK6Rzn3rKFPXFC"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::coin::TreasuryCap<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_usdc::DEMO_USDC>",
+      "objectId": "0x1429e63e1ce6227238c3b81f2fd83c3a4777e72400512cca555f08660668c619",
+      "version": "349181018",
+      "digest": "8SVCmKW1eSkz5SQJRnYuwwPnBofZFEbZrqLUZFP4wAhr"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::coin::TreasuryCap<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_eth::DEMO_ETH>",
+      "objectId": "0x1cf76aec3a50aaee2cb60ba27ba4cbc5f9fe4d8a6eeb58712116b04bf0a6c065",
+      "version": "349181018",
+      "digest": "GM93DkHpoXN2EdMHS4C64KMFwXWcJLyghU26zNB9HE8B"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "Shared": {
+          "initial_shared_version": 349181018
+        }
+      },
+      "objectType": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::fee_distributor::FeeDistributor",
+      "objectId": "0x23036241a23fa36fb8b996d6369f377bdcdecea194860e38e6382031591f384e",
+      "version": "349181018",
+      "digest": "59jPraRde9PDMHw7PzA66kB7mvSqHUHva3Vb6Q7YDQPD"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::coin::TreasuryCap<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_wsui::DEMO_WSUI>",
+      "objectId": "0x249076b19e00a736045bb3ccac46aae47ebe879c1403cfee0c77af2ee3c747c4",
+      "version": "349181018",
+      "digest": "AaZMS5z5fQPDF2oknEE6rqTkdiLyKqdHhmfkeqz9YHWG"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": "Immutable",
+      "objectType": "0x2::coin::CoinMetadata<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_btc::DEMO_BTC>",
+      "objectId": "0x2c8c6ad3fc3ef3a64dd97014ee6f21ba8ca5e2004d50049917727aebf3898dc6",
+      "version": "349181018",
+      "digest": "HAMGLDt6sm5NEWdm1uynKKwubAMUu6ezEMm58JGAsuut"
+    },
+    {
+      "type": "published",
+      "packageId": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa",
+      "version": "1",
+      "digest": "Ff7dG7aKCBXAacYUHWqa5Sw6URphJSGfmVzVCsr2SRiC",
+      "modules": [
+        "constants",
+        "demo_btc",
+        "demo_eth",
+        "demo_usdc",
+        "demo_usdt",
+        "demo_wsui",
+        "errors",
+        "events",
+        "fee_distributor",
+        "lp_position_nft",
+        "math",
+        "pool_factory",
+        "public_faucet",
+        "slippage_protection",
+        "stable_swap_pool"
+      ]
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::fee_distributor::FeeDistributorAdminCap",
+      "objectId": "0x468e4260316d4aab56514a4a6a67c32d08494e7cdc5d9d953cf000d7a7cb1d8f",
+      "version": "349181018",
+      "digest": "GaQhWm8oRkYAgLzcsnpR6dLDKDyL8Yoj3pAj1NJCCJN"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": "Immutable",
+      "objectType": "0x2::coin::CoinMetadata<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_usdt::DEMO_USDT>",
+      "objectId": "0x6bf47d2ea0ca2069d7855b27b5bef73d87f13cc57d682813e001073d1d5e2ea0",
+      "version": "349181018",
+      "digest": "AAKst1A9eary4942f8BHa3CodMxDZhAoVWYhfRgYupJW"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::stable_swap_pool::StableSwapAdminCap",
+      "objectId": "0x864dcb7095039dc90ee4965d937bf446d264963ed37b9b98df36a0a42ed47cdd",
+      "version": "349181018",
+      "digest": "G2x84V96wVK1nMR56ncoPcgMWJ9KSyFstBaYngQ1BDcU"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": "Immutable",
+      "objectType": "0x2::coin::CoinMetadata<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_eth::DEMO_ETH>",
+      "objectId": "0xace7dfd5f9690165c2f944cb2ce5370898d2ea7188bc80d68a988a4e120d1836",
+      "version": "349181018",
+      "digest": "Aig6eVapGsfXHSSip6TaFrMvMz3mbXHtTZm9AaA44CYd"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::pool_factory::PoolFactoryAdminCap",
+      "objectId": "0xb657127b41f644de77da37dc6511d6f578ad02849bd1fe54f40b2774036ea97d",
+      "version": "349181018",
+      "digest": "2vF8kG8L5wqb8kfR43Ut4ei87TfpUayjAHa2wFNNvJqz"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::coin::TreasuryCap<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_usdt::DEMO_USDT>",
+      "objectId": "0xc448ef1b7ee3c10028594001b7fb6425cd0d3df08787e6991c26e0c43f55e685",
+      "version": "349181018",
+      "digest": "4oMEuWHt6gGBCMcpjpyerdwv5wtGcFjNqsbZDmeKAqog"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::package::UpgradeCap",
+      "objectId": "0xcce21b9a86d987baffa94afdf4fe106c31005b53d3390837701529faf07bf936",
+      "version": "349181018",
+      "digest": "2KEtHT3wLJGh3bmC8894sCrWFu8SJx7DFtKS74XaQiJ8"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::public_faucet::FaucetAdminCap",
+      "objectId": "0xd1f2f43da1efdc1cd737069f117a8b34cf7b5014727f57eab0b84b4a5cc70aad",
+      "version": "349181018",
+      "digest": "Bi4DJarGVC2ejgJ148qao3coum5vJaNdsyUCmWLXMqHi"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": "Immutable",
+      "objectType": "0x2::coin::CoinMetadata<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_wsui::DEMO_WSUI>",
+      "objectId": "0xd63a3a25a93c778537d25ed8857fa6043b4a1518cc3c316adec1d88efbddf457",
+      "version": "349181018",
+      "digest": "7p34ABJcmCepSekRonyxTwUzCRz5VCGfaYyoFitmtPzK"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "Shared": {
+          "initial_shared_version": 349181018
+        }
+      },
+      "objectType": "0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::pool_factory::PoolFactory",
+      "objectId": "0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6",
+      "version": "349181018",
+      "digest": "CzdZCNRpMWzUrVicmRNTLWwHni2emJoC1w1HHUbaEVZc"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::package::Publisher",
+      "objectId": "0xeead36fb8a916a1f551c3fd5951cdd8a91e1ec1f3101f2ad049dc8695bba6ece",
+      "version": "349181018",
+      "digest": "3pAoDTpoQ84b4iLENuZzwqCiBFbU8py6jB9uvxKjvxop"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "objectType": "0x2::display::Display<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::lp_position_nft::LPPositionNFT>",
+      "objectId": "0xeeeb091722b882023461b59ab1391a5d47b283ab585d53910f1f6da59ade01c5",
+      "version": "349181018",
+      "digest": "9NmV78Ux7WtVaCLAyXJgRL1kQ9vkwMKKVkNYWaDSAZK"
+    },
+    {
+      "type": "created",
+      "sender": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd",
+      "owner": "Immutable",
+      "objectType": "0x2::coin::CoinMetadata<0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa::demo_usdc::DEMO_USDC>",
+      "objectId": "0xf340156444e7b9762beeb81c35945036cd92eef8990bd768920958b98565ee46",
+      "version": "349181018",
+      "digest": "2FweygztcwzfzfP7tG8hoeXysUNeKgwzuxtjLTzFa34a"
+    }
+  ],
+  "balanceChanges": [
+    {
+      "owner": {
+        "AddressOwner": "0xfe3df512d14db62f702d0c193564df373e3ba2674ca2d43382ba29597bb0c1fd"
+      },
+      "coinType": "0x2::sui::SUI",
+      "amount": "-318789880"
+    }
+  ],
+  "timestampMs": "1764493334983",
+  "confirmedLocalExecution": true,
+  "checkpoint": "269874309"
+}

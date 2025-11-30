@@ -129,16 +129,17 @@ sui client publish --gas-budget 500000000
 
 ## Testnet Deployment
 
-The contracts are deployed on **Sui Testnet** (v2 with demo tokens):
+The contracts are deployed on **Sui Testnet** (v3 with public faucet):
 
 | Item | Value |
 |------|-------|
-| **Package ID** | `0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089` |
-| **PoolFactory** | `0x0025e19450c6f390900e4a3d879735b119e4503a67aeec5c3e9b9cf0747ba3e7` |
-| **FeeDistributor** | `0xefe4a10aab40be514f11a31c9d9e6d736aae5b47c2c0df34c107a3a71bc2e0ca` |
-| **SlippageSettings** | `0x9130617e7916b948280f4741c17fe808086fbe1b08e4b740340a541ca49a52b1` |
+| **Package ID** | `0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa` |
+| **PoolFactory** | `0xeb0bc8869f53adcf10a10b92070d6910289ee54261dcfed387f659c8ffd53ed6` |
+| **FeeDistributor** | `0x23036241a23fa36fb8b996d6369f377bdcdecea194860e38e6382031591f384e` |
+| **SlippageSettings** | `0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485308c65963b437103259c11e` |
+| **PublicFaucet** | `0xa2d7ea8c75a3bdb035cd77659808998bbecec1cd7b5641e6e1d4768184eafe5e` |
 
-View on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089)
+View on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa)
 
 ### Demo
 
@@ -392,7 +393,8 @@ MIT License - see LICENSE file for details.
 ## Resources
 
 - [SuiSwap Live Demo](https://movefwd-amm.vercel.app) - Try the AMM on testnet
-- [Contract on Explorer](https://suiscan.xyz/testnet/object/0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089) - View deployed contracts
+- [Contract on Explorer](https://suiscan.xyz/testnet/object/0x374b4c8fec99c1f2dd38983fd1624c21d1984ec9258648aab9a5adaaafd70afa) - View deployed contracts
+- [Public Faucet](https://suiscan.xyz/testnet/object/0xa2d7ea8c75a3bdb035cd77659808998bbecec1cd7b5641e6e1d4768184eafe5e) - Anyone can get test tokens
 - [Sui Documentation](https://docs.sui.io/)
 - [Move Language](https://move-language.github.io/move/)
 - [Uniswap V2 Whitepaper](https://uniswap.org/whitepaper.pdf)
