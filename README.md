@@ -129,16 +129,16 @@ sui client publish --gas-budget 500000000
 
 ## Testnet Deployment
 
-The contracts are deployed on **Sui Testnet**:
+The contracts are deployed on **Sui Testnet** (v2 with demo tokens):
 
 | Item | Value |
 |------|-------|
-| **Package ID** | `0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65` |
-| **PoolFactory** | `0xf3b24aaf25fcad3d6790b385a1325821a9a2aed31f70d15d403dffdb504e78ca` |
-| **FeeDistributor** | `0x998117bfbff8f06e1ed2bc6ff5951146eba96d32113afecf729e503c74cdc127` |
-| **SlippageSettings** | `0x3f8eed76d96117b231221d4fdda32980b243cd3756267d0eb1cc4d0c1215802b` |
+| **Package ID** | `0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089` |
+| **PoolFactory** | `0x0025e19450c6f390900e4a3d879735b119e4503a67aeec5c3e9b9cf0747ba3e7` |
+| **FeeDistributor** | `0xefe4a10aab40be514f11a31c9d9e6d736aae5b47c2c0df34c107a3a71bc2e0ca` |
+| **SlippageSettings** | `0x9130617e7916b948280f4741c17fe808086fbe1b08e4b740340a541ca49a52b1` |
 
-View on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65)
+View on explorer: [Sui Explorer](https://suiscan.xyz/testnet/object/0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089)
 
 ### Demo
 
@@ -392,7 +392,7 @@ MIT License - see LICENSE file for details.
 ## Resources
 
 - [SuiSwap Live Demo](https://movefwd-amm.vercel.app) - Try the AMM on testnet
-- [Contract on Explorer](https://suiscan.xyz/testnet/object/0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65) - View deployed contracts
+- [Contract on Explorer](https://suiscan.xyz/testnet/object/0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089) - View deployed contracts
 - [Sui Documentation](https://docs.sui.io/)
 - [Move Language](https://move-language.github.io/move/)
 - [Uniswap V2 Whitepaper](https://uniswap.org/whitepaper.pdf)
