@@ -10,11 +10,15 @@ import {
   ExternalLink,
   Info,
   Sparkles,
-  RefreshCw
+  RefreshCw,
+  Copy,
+  Send,
+  UserPlus
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { toast } from "sonner";
@@ -40,9 +44,26 @@ export default function FaucetPage() {
   
   const [mintingToken, setMintingToken] = useState<TokenSymbol | null>(null);
   const [mintedTokens, setMintedTokens] = useState<Set<TokenSymbol>>(new Set());
+  const [recipientAddress, setRecipientAddress] = useState<string>("");
+  const [showCustomRecipient, setShowCustomRecipient] = useState(false);
 
   // Check if user has any treasury caps (only contract deployer has these)
   const hasTreasuryCaps = treasuryCaps && Object.keys(treasuryCaps).length > 0;
+
+  // The address to mint to (either connected wallet or custom)
+  const mintToAddress = showCustomRecipient && recipientAddress 
+    ? recipientAddress 
+    : account?.address || "";
+
+  // Copy address to clipboard
+  const copyAddress = () => {
+    if (account?.address) {
+      navigator.clipboard.writeText(account.address);
+      toast.success("Address copied!", {
+        description: "Share this with the deployer to receive tokens",
+      });
+    }
+  };
 
   const handleMint = async (symbol: TokenSymbol) => {
     if (!account) {
@@ -72,17 +93,23 @@ export default function FaucetPage() {
           arguments: [
             tx.object(treasuryCapId),
             tx.pure.u64(MINT_AMOUNTS[symbol]),
-            tx.pure.address(account.address),
+            tx.pure.address(mintToAddress),
           ],
         });
+        
+        const isMintingToSelf = mintToAddress === account.address;
         
         signAndExecute(
           { transaction: tx },
           {
             onSuccess: (result) => {
-              setMintedTokens((prev) => new Set([...prev, symbol]));
+              if (isMintingToSelf) {
+                setMintedTokens((prev) => new Set([...prev, symbol]));
+              }
               toast.success(`Minted ${symbol}!`, {
-                description: `Successfully minted ${formatTokenAmount(MINT_AMOUNTS[symbol], DEMO_TOKENS[symbol].decimals, 2)} ${symbol}`,
+                description: isMintingToSelf 
+                  ? `Successfully minted ${formatTokenAmount(MINT_AMOUNTS[symbol], DEMO_TOKENS[symbol].decimals, 2)} ${symbol}`
+                  : `Sent ${formatTokenAmount(MINT_AMOUNTS[symbol], DEMO_TOKENS[symbol].decimals, 2)} ${symbol} to ${mintToAddress.slice(0, 8)}...`,
                 action: {
                   label: "View",
                   onClick: () => window.open(getTxUrl(result.digest), "_blank"),
@@ -164,20 +191,26 @@ export default function FaucetPage() {
               arguments: [
                 tx.object(treasuryCap),
                 tx.pure.u64(MINT_AMOUNTS[symbol]),
-                tx.pure.address(account.address),
+                tx.pure.address(mintToAddress),
               ],
             });
           }
         }
         
+        const isMintingToSelf = mintToAddress === account.address;
+        
         signAndExecute(
           { transaction: tx },
           {
             onSuccess: (result) => {
-              const allTokens = new Set(allSymbols);
-              setMintedTokens(allTokens);
+              if (isMintingToSelf) {
+                const allTokens = new Set(allSymbols);
+                setMintedTokens(allTokens);
+              }
               toast.success("Minted All Tokens!", {
-                description: "You received USDC, USDT, ETH, BTC, and WSUI",
+                description: isMintingToSelf 
+                  ? "You received USDC, USDT, ETH, BTC, and WSUI"
+                  : `Sent all tokens to ${mintToAddress.slice(0, 8)}...`,
                 action: {
                   label: "View",
                   onClick: () => window.open(getTxUrl(result.digest), "_blank"),
@@ -258,20 +291,79 @@ export default function FaucetPage() {
         </p>
       </div>
 
-      {/* Treasury Cap Notice */}
+      {/* Deployer: Mint to Any Address */}
+      {hasTreasuryCaps && (
+        <Card className="glass-card border-[#00d4aa]/30 bg-[#00d4aa]/5">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <UserPlus className="w-5 h-5 text-[#00d4aa] mt-0.5 shrink-0" />
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold text-[#00d4aa]">Mint to Any Address</h4>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowCustomRecipient(!showCustomRecipient)}
+                    className="text-[#00d4aa] hover:text-white text-xs"
+                  >
+                    {showCustomRecipient ? "Use My Address" : "Send to Other Wallet"}
+                  </Button>
+                </div>
+                {showCustomRecipient ? (
+                  <div className="space-y-2">
+                    <p className="text-sm text-[#8b92a5]">
+                      Enter any Sui address to mint tokens directly to them:
+                    </p>
+                    <Input
+                      placeholder="0x..."
+                      value={recipientAddress}
+                      onChange={(e) => setRecipientAddress(e.target.value)}
+                      className="bg-[#0a0e1a] border-white/10 text-white font-mono text-sm"
+                    />
+                    {recipientAddress && (
+                      <p className="text-xs text-[#8b92a5]">
+                        Tokens will be sent to: <span className="text-white">{recipientAddress.slice(0, 12)}...{recipientAddress.slice(-8)}</span>
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-sm text-[#8b92a5]">
+                    As the deployer, you can mint tokens to yourself or click above to send to another wallet.
+                  </p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Non-Deployer: Request Tokens */}
       {!hasTreasuryCaps && (
         <Card className="glass-card border-[#f59e0b]/30 bg-[#f59e0b]/5">
           <CardContent className="p-4">
             <div className="flex items-start gap-3">
               <Info className="w-5 h-5 text-[#f59e0b] mt-0.5 shrink-0" />
-              <div>
-                <h4 className="font-semibold text-[#f59e0b] mb-1">Demo Mode</h4>
-                <p className="text-sm text-[#8b92a5] mb-2">
-                  Treasury caps are owned by the contract deployer. To mint real tokens, use the CLI:
+              <div className="flex-1">
+                <h4 className="font-semibold text-[#f59e0b] mb-2">Request Tokens</h4>
+                <p className="text-sm text-[#8b92a5] mb-3">
+                  Only the contract deployer can mint tokens. Share your address with the deployer:
                 </p>
-                <code className="block p-2 rounded bg-[#0a0e1a] text-xs text-[#00d4aa] font-mono overflow-x-auto">
-                  sui client call --package {PACKAGE_ID.slice(0, 10)}... --module demo_tokens --function mint_usdc --args &lt;TREASURY_CAP&gt; &lt;AMOUNT&gt; &lt;RECIPIENT&gt;
-                </code>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 p-2 rounded bg-[#0a0e1a] text-xs text-[#00d4aa] font-mono overflow-x-auto">
+                    {account?.address}
+                  </code>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={copyAddress}
+                    className="border-white/10 text-white hover:bg-white/5 shrink-0"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+                <p className="text-xs text-[#8b92a5] mt-2">
+                  The deployer can paste this address in the faucet to send you tokens.
+                </p>
               </div>
             </div>
           </CardContent>
