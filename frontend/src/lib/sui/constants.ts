@@ -1,8 +1,8 @@
-// Deployed Contract Addresses on Sui Testnet
-export const PACKAGE_ID = "0x2ece39501958bbccee8d22cad8ed70226148da7df7e6fbc4aa20b5aeb9c0de65";
-export const POOL_FACTORY_ID = "0xf3b24aaf25fcad3d6790b385a1325821a9a2aed31f70d15d403dffdb504e78ca";
-export const FEE_DISTRIBUTOR_ID = "0x998117bfbff8f06e1ed2bc6ff5951146eba96d32113afecf729e503c74cdc127";
-export const SLIPPAGE_SETTINGS_ID = "0x3f8eed76d96117b231221d4fdda32980b243cd3756267d0eb1cc4d0c1215802b";
+// Deployed Contract Addresses on Sui Testnet (v2 with demo tokens)
+export const PACKAGE_ID = "0xc506ab88e436640b27afdc5d4f70feaae7dfd8c58c6b00b587be44f342558089";
+export const POOL_FACTORY_ID = "0x0025e19450c6f390900e4a3d879735b119e4503a67aeec5c3e9b9cf0747ba3e7";
+export const FEE_DISTRIBUTOR_ID = "0xefe4a10aab40be514f11a31c9d9e6d736aae5b47c2c0df34c107a3a71bc2e0ca";
+export const SLIPPAGE_SETTINGS_ID = "0x9130617e7916b948280f4741c17fe808086fbe1b08e4b740340a541ca49a52b1";
 
 // System Objects
 export const CLOCK_ID = "0x6";
@@ -24,10 +24,11 @@ export const FEE_TIERS = {
   HIGH: 100,   // 1%
 } as const;
 
-// Demo Token Types
+// Demo Token Types (each token in its own module for OTW compliance)
 export const DEMO_TOKENS = {
   USDC: {
-    type: `${PACKAGE_ID}::demo_tokens::DEMO_USDC`,
+    type: `${PACKAGE_ID}::demo_usdc::DEMO_USDC`,
+    module: "demo_usdc",
     symbol: "USDC",
     name: "Demo USD Coin",
     decimals: 6,
@@ -35,7 +36,8 @@ export const DEMO_TOKENS = {
     color: "#2775ca",
   },
   USDT: {
-    type: `${PACKAGE_ID}::demo_tokens::DEMO_USDT`,
+    type: `${PACKAGE_ID}::demo_usdt::DEMO_USDT`,
+    module: "demo_usdt",
     symbol: "USDT",
     name: "Demo Tether USD",
     decimals: 6,
@@ -43,7 +45,8 @@ export const DEMO_TOKENS = {
     color: "#26a17b",
   },
   ETH: {
-    type: `${PACKAGE_ID}::demo_tokens::DEMO_ETH`,
+    type: `${PACKAGE_ID}::demo_eth::DEMO_ETH`,
+    module: "demo_eth",
     symbol: "ETH",
     name: "Demo Ethereum",
     decimals: 18,
@@ -51,7 +54,8 @@ export const DEMO_TOKENS = {
     color: "#627eea",
   },
   BTC: {
-    type: `${PACKAGE_ID}::demo_tokens::DEMO_BTC`,
+    type: `${PACKAGE_ID}::demo_btc::DEMO_BTC`,
+    module: "demo_btc",
     symbol: "BTC",
     name: "Demo Bitcoin",
     decimals: 8,
@@ -59,7 +63,8 @@ export const DEMO_TOKENS = {
     color: "#f7931a",
   },
   WSUI: {
-    type: `${PACKAGE_ID}::demo_tokens::DEMO_WSUI`,
+    type: `${PACKAGE_ID}::demo_wsui::DEMO_WSUI`,
+    module: "demo_wsui",
     symbol: "WSUI",
     name: "Demo Wrapped SUI",
     decimals: 9,
@@ -79,11 +84,11 @@ export const STABLE_SWAP_POOL_TYPE = `${PACKAGE_ID}::stable_swap_pool::StableSwa
 
 // Treasury Cap Types (for minting demo tokens)
 export const TREASURY_CAP_TYPES = {
-  USDC: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_tokens::DEMO_USDC>`,
-  USDT: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_tokens::DEMO_USDT>`,
-  ETH: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_tokens::DEMO_ETH>`,
-  BTC: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_tokens::DEMO_BTC>`,
-  WSUI: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_tokens::DEMO_WSUI>`,
+  USDC: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_usdc::DEMO_USDC>`,
+  USDT: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_usdt::DEMO_USDT>`,
+  ETH: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_eth::DEMO_ETH>`,
+  BTC: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_btc::DEMO_BTC>`,
+  WSUI: `0x2::coin::TreasuryCap<${PACKAGE_ID}::demo_wsui::DEMO_WSUI>`,
 } as const;
 
 // Explorer Links
@@ -100,4 +105,5 @@ export function getTxUrl(txDigest: string): string {
 export function getAccountUrl(address: string): string {
   return `${EXPLORER_BASE_URL}/account/${address}`;
 }
+
 

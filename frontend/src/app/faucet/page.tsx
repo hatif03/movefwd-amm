@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCurrentAccount, useSignAndExecuteTransaction, useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { toast } from "sonner";
-import { DEMO_TOKENS, TokenSymbol, getTxUrl, PACKAGE_ID, MODULES } from "@/lib/sui/constants";
+import { DEMO_TOKENS, TokenSymbol, getTxUrl, PACKAGE_ID } from "@/lib/sui/constants";
 import { formatTokenAmount } from "@/lib/sui/transactions";
 import { useTokenBalances, useTreasuryCaps } from "@/lib/sui/queries";
 
@@ -64,10 +64,11 @@ export default function FaucetPage() {
       try {
         const tx = new Transaction();
         
-        const functionName = `mint_${symbol.toLowerCase()}`;
+        // Each token is in its own module with a `mint` function
+        const tokenInfo = DEMO_TOKENS[symbol];
         
         tx.moveCall({
-          target: `${PACKAGE_ID}::${MODULES.DEMO_TOKENS}::${functionName}`,
+          target: `${PACKAGE_ID}::${tokenInfo.module}::mint`,
           arguments: [
             tx.object(treasuryCapId),
             tx.pure.u64(MINT_AMOUNTS[symbol]),
@@ -153,17 +154,21 @@ export default function FaucetPage() {
       try {
         const tx = new Transaction();
         
-        tx.moveCall({
-          target: `${PACKAGE_ID}::${MODULES.DEMO_TOKENS}::mint_demo_bundle`,
-          arguments: [
-            tx.object(treasuryCaps.USDC!),
-            tx.object(treasuryCaps.USDT!),
-            tx.object(treasuryCaps.ETH!),
-            tx.object(treasuryCaps.BTC!),
-            tx.object(treasuryCaps.WSUI!),
-            tx.pure.address(account.address),
-          ],
-        });
+        // Mint each token separately (each has its own module)
+        for (const symbol of allSymbols) {
+          const tokenInfo = DEMO_TOKENS[symbol];
+          const treasuryCap = treasuryCaps[symbol];
+          if (treasuryCap) {
+            tx.moveCall({
+              target: `${PACKAGE_ID}::${tokenInfo.module}::mint`,
+              arguments: [
+                tx.object(treasuryCap),
+                tx.pure.u64(MINT_AMOUNTS[symbol]),
+                tx.pure.address(account.address),
+              ],
+            });
+          }
+        }
         
         signAndExecute(
           { transaction: tx },
