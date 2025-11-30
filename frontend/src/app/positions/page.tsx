@@ -80,14 +80,43 @@ export default function PositionsPage() {
   const account = useCurrentAccount();
   const { mutate: signAndExecute, isPending } = useSignAndExecuteTransaction();
   
+  // Fetch real LP positions from blockchain
+  const { data: realLPPositions, isLoading: positionsLoading } = useLPPositions();
+  
   const [selectedPosition, setSelectedPosition] = useState<typeof MOCK_POSITIONS[0] | null>(null);
   const [removeAmount, setRemoveAmount] = useState("");
   const [isRemoving, setIsRemoving] = useState(false);
   const [expandedPosition, setExpandedPosition] = useState<string | null>(null);
 
+  // Convert real positions to display format, or use mock positions as fallback
+  const positions = useMemo(() => {
+    if (realLPPositions && realLPPositions.length > 0) {
+      return realLPPositions.map((pos) => ({
+        id: pos.id || "",
+        poolId: pos.poolId,
+        tokenA: "USDC" as TokenSymbol, // Would need pool lookup to get actual tokens
+        tokenB: "USDT" as TokenSymbol,
+        lpTokens: pos.lpTokens,
+        initialAmountA: pos.initialAmountA,
+        initialAmountB: pos.initialAmountB,
+        currentAmountA: pos.initialAmountA, // Simplified - would need pool reserves
+        currentAmountB: pos.initialAmountB,
+        feesEarnedA: pos.feesEarnedA,
+        feesEarnedB: pos.feesEarnedB,
+        createdAt: pos.createdAt,
+        valueUsd: Number(pos.initialAmountA) / 1e6 + Number(pos.initialAmountB) / 1e6, // Simplified
+        pnlPercent: 0,
+        ilPercent: 0,
+        isReal: true,
+      }));
+    }
+    return MOCK_POSITIONS.map(p => ({ ...p, isReal: false }));
+  }, [realLPPositions]);
+
   // Calculate total portfolio value
-  const totalValue = MOCK_POSITIONS.reduce((sum, pos) => sum + pos.valueUsd, 0);
-  const totalPnl = MOCK_POSITIONS.reduce((sum, pos) => sum + (pos.valueUsd * pos.pnlPercent / 100), 0);
+  const totalValue = positions.reduce((sum, pos) => sum + pos.valueUsd, 0);
+  const totalPnl = positions.reduce((sum, pos) => sum + (pos.valueUsd * pos.pnlPercent / 100), 0);
+  const hasRealPositions = realLPPositions && realLPPositions.length > 0;
 
   // Handle remove liquidity
   const handleRemoveLiquidity = async () => {
@@ -180,15 +209,39 @@ export default function PositionsPage() {
           <CardContent className="p-4">
             <div className="text-sm text-[#8b92a5] mb-1">Active Positions</div>
             <div className="text-2xl font-bold font-mono text-white">
-              {MOCK_POSITIONS.length}
+              {positions.length}
             </div>
+            {hasRealPositions && (
+              <div className="text-xs text-[#00d4aa] mt-1">Live on-chain</div>
+            )}
           </CardContent>
         </Card>
       </div>
 
       {/* Positions List */}
       <div className="space-y-4">
-        {MOCK_POSITIONS.map((position) => {
+        {positionsLoading ? (
+          <Card className="glass-card border-white/5">
+            <CardContent className="py-8 text-center">
+              <Loader2 className="w-8 h-8 animate-spin text-[#00d4aa] mx-auto mb-2" />
+              <p className="text-[#8b92a5]">Loading positions...</p>
+            </CardContent>
+          </Card>
+        ) : positions.length === 0 ? (
+          <Card className="glass-card border-white/5">
+            <CardContent className="py-8 text-center">
+              <Coins className="w-12 h-12 text-[#8b92a5] mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">No Positions Yet</h3>
+              <p className="text-[#8b92a5] mb-4">Add liquidity to a pool to create your first position</p>
+              <Link href="/pools/add">
+                <Button className="bg-gradient-to-r from-[#00d4aa] to-[#00a8ff] text-[#0a0e1a]">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Liquidity
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        ) : positions.map((position) => {
           const tokenA = getTokenInfo(position.tokenA);
           const tokenB = getTokenInfo(position.tokenB);
           const pool = MOCK_POOLS.find(p => p.id === position.poolId);
@@ -220,6 +273,11 @@ export default function PositionsPage() {
                           <Badge variant="secondary" className="bg-[#00d4aa]/10 text-[#00d4aa] text-xs">
                             NFT
                           </Badge>
+                          {position.isReal && (
+                            <Badge variant="secondary" className="bg-[#00a8ff]/10 text-[#00a8ff] text-xs">
+                              On-chain
+                            </Badge>
+                          )}
                         </div>
                         <div className="flex items-center gap-2 text-sm text-[#8b92a5]">
                           <Clock className="w-3 h-3" />
