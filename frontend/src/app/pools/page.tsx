@@ -35,6 +35,7 @@ import {
   getTokenInfo 
 } from "@/lib/mock-data";
 import { formatTokenAmount } from "@/lib/sui/transactions";
+import { useAllPools, usePoolFactory } from "@/lib/sui/queries";
 
 type SortOption = "tvl" | "volume" | "apr" | "fees";
 
@@ -43,8 +44,32 @@ export default function PoolsPage() {
   const [sortBy, setSortBy] = useState<SortOption>("tvl");
   const [showAll, setShowAll] = useState(false);
 
+  // Fetch real pools from blockchain
+  const { data: realPools, isLoading: poolsLoading } = useAllPools();
+  const { data: poolFactory } = usePoolFactory();
+
+  // Combine real pools with mock pools for display
+  // Real pools take priority, mock pools fill in the gaps
+  const displayPools = realPools && realPools.length > 0 
+    ? realPools.map(pool => ({
+        id: pool.id,
+        tokenA: pool.tokenA,
+        tokenB: pool.tokenB,
+        feeTier: pool.feeTier / 100, // Convert basis points to percentage
+        reserveA: pool.reserveA,
+        reserveB: pool.reserveB,
+        // Estimate TVL based on reserves (simplified)
+        tvlUsd: Number(pool.reserveA) / Math.pow(10, DEMO_TOKENS[pool.tokenA].decimals) * 1 +
+                Number(pool.reserveB) / Math.pow(10, DEMO_TOKENS[pool.tokenB].decimals) * 1,
+        volume24h: 0, // Would need historical data
+        apr: pool.feeTier / 100 * 365, // Rough APR estimate
+        fees24h: 0,
+        isReal: true,
+      }))
+    : MOCK_POOLS.map(p => ({ ...p, isReal: false }));
+
   // Filter and sort pools
-  const filteredPools = MOCK_POOLS
+  const filteredPools = displayPools
     .filter((pool) => {
       const query = searchQuery.toLowerCase();
       return (
@@ -92,8 +117,13 @@ export default function PoolsPage() {
           <CardContent className="p-4">
             <div className="text-sm text-[#8b92a5] mb-1">Total Value Locked</div>
             <div className="text-xl font-bold font-mono text-white">
-              {formatUsd(PROTOCOL_STATS.totalValueLocked)}
+              {realPools && realPools.length > 0 
+                ? `$${displayPools.reduce((sum, p) => sum + p.tvlUsd, 0).toFixed(2)}`
+                : formatUsd(PROTOCOL_STATS.totalValueLocked)}
             </div>
+            {realPools && realPools.length > 0 && (
+              <div className="text-xs text-[#00d4aa] mt-1">Live on-chain</div>
+            )}
           </CardContent>
         </Card>
         <Card className="glass-card border-white/5">
@@ -108,8 +138,11 @@ export default function PoolsPage() {
           <CardContent className="p-4">
             <div className="text-sm text-[#8b92a5] mb-1">Total Pools</div>
             <div className="text-xl font-bold font-mono text-white">
-              {PROTOCOL_STATS.totalPools}
+              {poolFactory?.totalPools ?? PROTOCOL_STATS.totalPools}
             </div>
+            {poolFactory && (
+              <div className="text-xs text-[#00d4aa] mt-1">Live on-chain</div>
+            )}
           </CardContent>
         </Card>
         <Card className="glass-card border-white/5">
@@ -191,10 +224,15 @@ export default function PoolsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Badge variant="secondary" className="text-xs bg-[#1a2035] text-[#8b92a5]">
-                            {pool.feeTier / 100}% fee
+                            {typeof pool.feeTier === 'number' && pool.feeTier > 1 ? pool.feeTier / 100 : pool.feeTier}% fee
                           </Badge>
-                          {pool.tokenA === "USDC" && pool.tokenB === "USDT" && (
+                          {pool.isReal && (
                             <Badge variant="secondary" className="text-xs bg-[#00d4aa]/10 text-[#00d4aa]">
+                              On-chain
+                            </Badge>
+                          )}
+                          {pool.tokenA === "USDC" && pool.tokenB === "USDT" && (
+                            <Badge variant="secondary" className="text-xs bg-[#00a8ff]/10 text-[#00a8ff]">
                               Stable
                             </Badge>
                           )}
