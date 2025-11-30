@@ -6,6 +6,7 @@ export const SLIPPAGE_SETTINGS_ID = "0x0613b47f6bf7bba429f2d0aae883bc3fde29f7485
 
 // Public Faucet - Anyone can mint tokens from this!
 export const PUBLIC_FAUCET_ID = "0xa2d7ea8c75a3bdb035cd77659808998bbecec1cd7b5641e6e1d4768184eafe5e";
+export const PUBLIC_FAUCET_INITIAL_VERSION = 349181019;
 
 // System Objects
 export const CLOCK_ID = "0x6";

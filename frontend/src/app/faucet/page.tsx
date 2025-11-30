@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { toast } from "sonner";
-import { DEMO_TOKENS, TokenSymbol, getTxUrl, PACKAGE_ID, PUBLIC_FAUCET_ID } from "@/lib/sui/constants";
+import { DEMO_TOKENS, TokenSymbol, getTxUrl, PACKAGE_ID, PUBLIC_FAUCET_ID, PUBLIC_FAUCET_INITIAL_VERSION } from "@/lib/sui/constants";
 import { formatTokenAmount } from "@/lib/sui/transactions";
 import { useTokenBalances } from "@/lib/sui/queries";
 
@@ -56,10 +56,15 @@ export default function FaucetPage() {
       const tx = new Transaction();
       
       // Call the public faucet request function
+      // Use sharedObjectRef for mutable shared objects
       tx.moveCall({
         target: `${PACKAGE_ID}::public_faucet::request_${symbol.toLowerCase()}`,
         arguments: [
-          tx.object(PUBLIC_FAUCET_ID),
+          tx.sharedObjectRef({
+            objectId: PUBLIC_FAUCET_ID,
+            initialSharedVersion: PUBLIC_FAUCET_INITIAL_VERSION,
+            mutable: true,
+          }),
         ],
       });
       
@@ -117,10 +122,15 @@ export default function FaucetPage() {
       const tx = new Transaction();
       
       // Call request_all_tokens
+      // Use sharedObjectRef for mutable shared objects
       tx.moveCall({
         target: `${PACKAGE_ID}::public_faucet::request_all_tokens`,
         arguments: [
-          tx.object(PUBLIC_FAUCET_ID),
+          tx.sharedObjectRef({
+            objectId: PUBLIC_FAUCET_ID,
+            initialSharedVersion: PUBLIC_FAUCET_INITIAL_VERSION,
+            mutable: true,
+          }),
         ],
       });
       
