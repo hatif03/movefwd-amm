@@ -91,24 +91,27 @@ export default function PositionsPage() {
   // Convert real positions to display format, or use mock positions as fallback
   const positions = useMemo(() => {
     if (realLPPositions && realLPPositions.length > 0) {
-      return realLPPositions.map((pos) => ({
-        id: pos.id || "",
-        poolId: pos.poolId,
-        tokenA: "USDC" as TokenSymbol, // Would need pool lookup to get actual tokens
-        tokenB: "USDT" as TokenSymbol,
-        lpTokens: pos.lpTokens,
-        initialAmountA: pos.initialAmountA,
-        initialAmountB: pos.initialAmountB,
-        currentAmountA: pos.initialAmountA, // Simplified - would need pool reserves
-        currentAmountB: pos.initialAmountB,
-        feesEarnedA: pos.feesEarnedA,
-        feesEarnedB: pos.feesEarnedB,
-        createdAt: pos.createdAt,
-        valueUsd: Number(pos.initialAmountA) / 1e6 + Number(pos.initialAmountB) / 1e6, // Simplified
-        pnlPercent: 0,
-        ilPercent: 0,
-        isReal: true,
-      }));
+      // Filter out null values and map to display format
+      return realLPPositions
+        .filter((pos): pos is NonNullable<typeof pos> => pos !== null && pos !== undefined)
+        .map((pos) => ({
+          id: pos.id || "",
+          poolId: pos.poolId,
+          tokenA: "USDC" as TokenSymbol, // Would need pool lookup to get actual tokens
+          tokenB: "USDT" as TokenSymbol,
+          lpTokens: pos.lpTokens,
+          initialAmountA: pos.initialAmountA,
+          initialAmountB: pos.initialAmountB,
+          currentAmountA: pos.initialAmountA, // Simplified - would need pool reserves
+          currentAmountB: pos.initialAmountB,
+          feesEarnedA: pos.feesEarnedA,
+          feesEarnedB: pos.feesEarnedB,
+          createdAt: pos.createdAt,
+          valueUsd: Number(pos.initialAmountA) / 1e6 + Number(pos.initialAmountB) / 1e6, // Simplified
+          pnlPercent: 0,
+          ilPercent: 0,
+          isReal: true,
+        }));
     }
     return MOCK_POSITIONS.map(p => ({ ...p, isReal: false }));
   }, [realLPPositions]);
